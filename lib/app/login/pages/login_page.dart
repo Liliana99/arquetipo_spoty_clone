@@ -1,14 +1,16 @@
 import 'package:arquetipo_flutter_bloc/app/login/blocs/bloc.dart';
-import 'package:arquetipo_flutter_bloc/app/login/repositories/login_repository.dart';
+import 'package:arquetipo_flutter_bloc/shared/repositories/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginBloc(null, LoginRepository()),
+      create: (context) =>
+          LoginBloc(RepositoryProvider.of<AuthenticationRepository>(context)),
       child: LoginContent(),
     );
   }
@@ -18,7 +20,6 @@ class LoginContent extends StatefulWidget {
   @override
   _LoginContentState createState() => _LoginContentState();
 }
-
 
 class _LoginContentState extends State<LoginContent> {
   @override
@@ -48,21 +49,8 @@ class LoginForm extends StatelessWidget {
       children: [
         _UserNameInput(),
         _PasswordInput(),
-        CheckboxListTile(
-          title: const Text('Recordar usuario'),
-          value: false,
-          onChanged: (bool value) {},
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 30),
-          child: SizedBox(
-            width: double.infinity,
-            child: RaisedButton(
-              onPressed: () {},
-              child: const Text('Login', style: TextStyle(fontSize: 20)),
-            ),
-          ),
-        )
+        _RememberUserInput(),
+        _LoginButton()
       ],
     );
   }
@@ -71,8 +59,19 @@ class LoginForm extends StatelessWidget {
 class _UserNameInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      decoration: InputDecoration(labelText: 'Username'),
+    return BlocBuilder<LoginBloc, LoginBlocState>(
+      buildWhen: (previous, current) => previous.username != current.username,
+      builder: (context, state) {
+        return TextField(
+          key: const Key('loginForm_usernameInput_textField'),
+          onChanged: (username) =>
+              context.read<LoginBloc>().add(LoginUsernameChanged(username)),
+          decoration: InputDecoration(
+            hintText: 'Username',
+            errorText: state.username.invalid ? 'invalid username' : null,
+          ),
+        );
+      },
     );
   }
 }
@@ -80,9 +79,78 @@ class _UserNameInput extends StatelessWidget {
 class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      obscureText: true,
-      decoration: InputDecoration(labelText: 'Password'),
+    return BlocBuilder<LoginBloc, LoginBlocState>(
+      buildWhen: (previous, current) =>
+          previous.password != current.password ||
+          previous.status != current.status,
+      builder: (context, state) {
+        return TextField(
+          key: const Key('loginForm_passwordInput_textField'),
+          obscureText: true,
+          onChanged: (password) =>
+              context.read<LoginBloc>().add(LoginPasswordChanged(password)),
+          decoration: InputDecoration(
+            hintText: 'Password',
+            errorText: state.password.invalid ? 'invalid password' : null,
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _RememberUserInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginBlocState>(
+        buildWhen: (previous, current) => previous.remember != current.remember,
+        builder: (context, state) {
+          return CheckboxListTile(
+            title: const Text('Recordar usuario'),
+            value: state.remember,
+            onChanged: (bool remember) => {
+              context.read<LoginBloc>().add(LoginRememberChanged(remember)),
+            },
+          );
+        });
+  }
+}
+
+class _LoginButton extends StatelessWidget {
+  const _LoginButton({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginBloc, LoginBlocState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: SizedBox(
+            width: double.infinity,
+            child: RaisedButton(
+              color: Theme.of(context).primaryColor,
+              onPressed: state.isValid()
+                  ? () {
+                      context.read<LoginBloc>().add(const LoginSubmitted());
+                    }
+                  : null,
+              child: state.status == FormzStatus.submissionInProgress ?
+              SizedBox(
+                width: 15,
+                height: 15,
+                child: CircularProgressIndicator(
+                  backgroundColor: Colors.white,
+                ),
+              ) :
+              const Text('Login',
+                  style: TextStyle(fontSize: 20, color: Colors.white))
+              ,
+            ),
+          ),
+        );
+      },
     );
   }
 }

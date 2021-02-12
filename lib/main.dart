@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:arquetipo_flutter_bloc/shared/blocs/authentication/bloc.dart';
 import 'package:arquetipo_flutter_bloc/shared/repositories/authentication_repository.dart';
 import 'package:arquetipo_flutter_bloc/shared/utils/routes.dart';
+import 'package:arquetipo_flutter_bloc/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,12 +24,10 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        log('test');
         FocusScopeNode currentFocus = FocusScope.of(context);
 
         if (!currentFocus.hasPrimaryFocus &&
@@ -45,9 +42,7 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             S.delegate],
           supportedLocales: S.delegate.supportedLocales,*/
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
+          theme: buildThemeData(),
           initialRoute: '/',
           routes: routes),
     );
