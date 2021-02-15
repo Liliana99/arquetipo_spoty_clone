@@ -1,4 +1,5 @@
 import 'package:arquetipo_flutter_bloc/app/login/blocs/bloc.dart';
+import 'package:arquetipo_flutter_bloc/generated/l10n.dart';
 import 'package:arquetipo_flutter_bloc/shared/repositories/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -6,6 +7,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
 class LoginPage extends StatelessWidget {
+
+  static Route route() {
+    return MaterialPageRoute<void>(builder: (_) => LoginPage());
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -67,8 +73,8 @@ class _UserNameInput extends StatelessWidget {
           onChanged: (username) =>
               context.read<LoginBloc>().add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
-            hintText: 'Username',
-            errorText: state.username.invalid ? 'invalid username' : null,
+            hintText: S.of(context).username,
+            errorText: state.username.invalid ? S.of(context).invalidUsername : null,
           ),
         );
       },
@@ -90,8 +96,8 @@ class _PasswordInput extends StatelessWidget {
           onChanged: (password) =>
               context.read<LoginBloc>().add(LoginPasswordChanged(password)),
           decoration: InputDecoration(
-            hintText: 'Password',
-            errorText: state.password.invalid ? 'invalid password' : null,
+            hintText: S.of(context).password,
+            errorText: state.password.invalid ? S.of(context).invalidPassword : null,
           ),
         );
       },
@@ -106,7 +112,7 @@ class _RememberUserInput extends StatelessWidget {
         buildWhen: (previous, current) => previous.remember != current.remember,
         builder: (context, state) {
           return CheckboxListTile(
-            title: const Text('Recordar usuario'),
+            title: Text(S.of(context).rememberUser),
             value: state.remember,
             onChanged: (bool remember) => {
               context.read<LoginBloc>().add(LoginRememberChanged(remember)),
@@ -144,7 +150,7 @@ class _LoginButton extends StatelessWidget {
                   backgroundColor: Colors.white,
                 ),
               ) :
-              const Text('Login',
+              Text(S.of(context).loginButton,
                   style: TextStyle(fontSize: 20, color: Colors.white))
               ,
             ),

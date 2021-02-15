@@ -4,6 +4,12 @@ import 'package:arquetipo_flutter_bloc/shared/utils/routes.dart';
 import 'package:arquetipo_flutter_bloc/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'app/home/pages/home_page.dart';
+import 'app/login/pages/login_page.dart';
+import 'app/login/pages/splash_page.dart';
+import 'generated/l10n.dart';
 
 void main() {
   runApp(MultiRepositoryProvider(
@@ -24,6 +30,10 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
+  NavigatorState get _navigator => _navigatorKey.currentState;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -36,15 +46,32 @@ class MyApp extends StatelessWidget {
         }
       },
       child: MaterialApp(
-          title: 'Flutter Demo',
-/*        localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            S.delegate],
-          supportedLocales: S.delegate.supportedLocales,*/
-          theme: buildThemeData(),
-          initialRoute: '/',
-          routes: routes),
+        title: 'Flutter Demo',
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          S.delegate
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        theme: buildThemeData(),
+        navigatorKey: _navigatorKey,
+        initialRoute: '/',
+        routes: routes,
+        builder: (context, child) {
+          return BlocListener<AuthenticationBloc, AuthenticationState>(
+            listener: (context, state) {
+              if (state.status == AuthenticationStatus.authenticated) {
+                _navigator.pushAndRemoveUntil(
+                    HomePage.route(), (route) => false);
+              } else if (state.status == AuthenticationStatus.unauthenticated) {
+                _navigator.pushAndRemoveUntil(
+                    LoginPage.route(), (route) => false);
+              }
+            },
+            child: child,
+          );
+        },
+      ),
     );
   }
 }

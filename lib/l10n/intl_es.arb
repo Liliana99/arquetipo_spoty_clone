@@ -1,0 +1,12 @@
+{
+    "username": "Usuario",
+    "password": "Contraseña",
+    "invalidUsername": "Usuario inválido",
+    "invalidPassword": "Contraseña inválida",
+    "rememberUser": "Recordar usuario",
+    "loginButton": "Acceder ",
+    "menuHome": "Inicio",
+    "menuMore": "Más",
+    "menuRandom": "Random",
+    "menuLogout": "Logout"
+}

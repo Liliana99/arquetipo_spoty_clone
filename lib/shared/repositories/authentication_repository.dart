@@ -22,6 +22,7 @@ class AuthenticationRepository {
   Future<void> logIn({
     @required String username,
     @required String password,
+    bool rememberUser = false
   }) async {
     assert(username != null);
     assert(password != null);
