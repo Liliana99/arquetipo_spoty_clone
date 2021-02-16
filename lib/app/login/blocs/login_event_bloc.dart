@@ -25,6 +25,13 @@ class LoginPasswordChanged extends LoginBlocEvent {
   List<Object> get props => [password];
 }
 
+class LoginPasswordVisibilityChanged extends LoginBlocEvent {
+  const LoginPasswordVisibilityChanged(this.visibility);
+  final bool visibility;
+  @override
+  List<Object> get props => [visibility];
+}
+
 class LoginRememberChanged extends LoginBlocEvent {
   const LoginRememberChanged(this.remember);
 

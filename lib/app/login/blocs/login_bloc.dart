@@ -21,6 +21,8 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
       yield _mapPasswordChangedToState(event, state);
     } else if (event is LoginRememberChanged) {
       yield _mapRememberChangedToState(event, state);
+    } else if (event is LoginPasswordVisibilityChanged) {
+      yield _mapPasswordVisibilityChangedToState(event, state);
     } else if (event is LoginSubmitted) {
       yield* _mapLoginSubmittedToState(event, state);
     }
@@ -50,6 +52,14 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
     );
   }
 
+  LoginBlocState _mapPasswordVisibilityChangedToState(LoginPasswordVisibilityChanged event, LoginBlocState state) {
+
+    return state.copyWith(
+        pwdVisibility: event.visibility
+    );
+  }
+
+
   Stream<LoginBlocState> _mapLoginSubmittedToState(LoginSubmitted event, LoginBlocState state) async* {
     if(state.isValid()) {
       yield state.copyWith(status: FormzStatus.submissionInProgress);
@@ -58,6 +68,7 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
         await _authenticationRepository.logIn(
           username: state.username.value,
           password: state.password.value,
+          rememberUser: state.remember,
         );
         yield state.copyWith(status: FormzStatus.submissionSuccess);
       } on Exception catch (_) {
@@ -68,5 +79,6 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
       yield state.copyWith(status: FormzStatus.submissionFailure);
     }
   }
+
 }
 

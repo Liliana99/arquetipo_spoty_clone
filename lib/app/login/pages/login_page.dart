@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
 class LoginPage extends StatelessWidget {
-
   static Route route() {
     return MaterialPageRoute<void>(builder: (_) => LoginPage());
   }
@@ -51,10 +50,12 @@ class _LoginContentState extends State<LoginContent> {
 class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final node = FocusScope.of(context);
+
     return Column(
       children: [
-        _UserNameInput(),
-        _PasswordInput(),
+        _UserNameInput(node),
+        _PasswordInput(node),
         _RememberUserInput(),
         _LoginButton()
       ],
@@ -63,6 +64,10 @@ class LoginForm extends StatelessWidget {
 }
 
 class _UserNameInput extends StatelessWidget {
+  final FocusScopeNode focusNode;
+
+  _UserNameInput(this.focusNode);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginBlocState>(
@@ -70,11 +75,13 @@ class _UserNameInput extends StatelessWidget {
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_usernameInput_textField'),
+          onEditingComplete: () => focusNode.nextFocus(), // Move focus to next
           onChanged: (username) =>
               context.read<LoginBloc>().add(LoginUsernameChanged(username)),
           decoration: InputDecoration(
             hintText: S.of(context).username,
-            errorText: state.username.invalid ? S.of(context).invalidUsername : null,
+            errorText:
+                state.username.invalid ? S.of(context).invalidUsername : null,
           ),
         );
       },
@@ -83,21 +90,35 @@ class _UserNameInput extends StatelessWidget {
 }
 
 class _PasswordInput extends StatelessWidget {
+  final FocusScopeNode focusNode;
+
+  _PasswordInput(this.focusNode);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginBloc, LoginBlocState>(
       buildWhen: (previous, current) =>
           previous.password != current.password ||
-          previous.status != current.status,
+          previous.status != current.status ||
+          previous.pwdVisibility != current.pwdVisibility,
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_passwordInput_textField'),
-          obscureText: true,
+          onEditingComplete: () => {focusNode.unfocus()},
+          // Move focus to next
+          obscureText: !state.pwdVisibility,
           onChanged: (password) =>
               context.read<LoginBloc>().add(LoginPasswordChanged(password)),
           decoration: InputDecoration(
+            suffixIcon: IconButton(
+                icon: Icon(state.pwdVisibility ? Icons.remove_red_eye : Icons.remove_red_eye_outlined),
+                onPressed: () {
+                  context.read<LoginBloc>().add(LoginPasswordVisibilityChanged(!state.pwdVisibility));
+                },
+            ),
             hintText: S.of(context).password,
-            errorText: state.password.invalid ? S.of(context).invalidPassword : null,
+            errorText:
+                state.password.invalid ? S.of(context).invalidPassword : null,
           ),
         );
       },
@@ -142,17 +163,16 @@ class _LoginButton extends StatelessWidget {
                       context.read<LoginBloc>().add(const LoginSubmitted());
                     }
                   : null,
-              child: state.status == FormzStatus.submissionInProgress ?
-              SizedBox(
-                width: 15,
-                height: 15,
-                child: CircularProgressIndicator(
-                  backgroundColor: Colors.white,
-                ),
-              ) :
-              Text(S.of(context).loginButton,
-                  style: TextStyle(fontSize: 20, color: Colors.white))
-              ,
+              child: state.status == FormzStatus.submissionInProgress
+                  ? SizedBox(
+                      width: 15,
+                      height: 15,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                      ),
+                    )
+                  : Text(S.of(context).loginButton,
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
             ),
           ),
         );

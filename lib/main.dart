@@ -1,5 +1,6 @@
 import 'package:arquetipo_flutter_bloc/shared/blocs/authentication/bloc.dart';
 import 'package:arquetipo_flutter_bloc/shared/repositories/authentication_repository.dart';
+import 'package:arquetipo_flutter_bloc/shared/repositories/storage_repository.dart';
 import 'package:arquetipo_flutter_bloc/shared/utils/routes.dart';
 import 'package:arquetipo_flutter_bloc/theme.dart';
 import 'package:flutter/material.dart';
@@ -8,14 +9,17 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'app/home/pages/home_page.dart';
 import 'app/login/pages/login_page.dart';
-import 'app/login/pages/splash_page.dart';
 import 'generated/l10n.dart';
 
 void main() {
+  final StorageRepository storageRepository = StorageRepository();
+
   runApp(MultiRepositoryProvider(
     providers: [
       RepositoryProvider<AuthenticationRepository>(
-          create: (context) => AuthenticationRepository()),
+          create: (context) => AuthenticationRepository(storageRepository)),
+      RepositoryProvider<StorageRepository>(
+          create: (context) => storageRepository),
     ],
     child: MultiBlocProvider(
       providers: [

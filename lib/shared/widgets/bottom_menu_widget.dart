@@ -32,17 +32,21 @@ class BottomMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      items: items.map((e) => BottomNavigationBarItem(
-            icon: e(context).icon,
-            label: e(context).label,
-          )).toList(),
+      items: items
+          .map((e) => BottomNavigationBarItem(
+                icon: e(context).icon,
+                label: e(context).label,
+              ))
+          .toList(),
       currentIndex: index,
       selectedItemColor: Theme.of(context).primaryColor,
       onTap: (index) {
         String route = items[index](context).route;
-        if(route == 'logout') {
+        final string = 'logout';
+        if (route == string) {
           BlocProvider.of<AuthenticationBloc>(context)
               .add(AuthenticationLogoutRequested());
+          return;
         }
         Navigator.pushNamedAndRemoveUntil(context, route, (route) => false);
       },

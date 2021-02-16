@@ -9,24 +9,28 @@ class LoginBlocState extends Equatable {
     this.username = const Username.pure(),
     this.password = const Password.pure(),
     this.remember = false,
+    this.pwdVisibility = false,
   });
 
   final FormzStatus status;
   final Username username;
   final Password password;
   final bool remember;
+  final bool pwdVisibility;
 
   LoginBlocState copyWith({
     FormzStatus status,
     Username username,
     Password password,
-    bool remember
+    bool remember,
+    bool pwdVisibility,
   }) {
     return LoginBlocState(
       status: status ?? this.status,
       username: username ?? this.username,
       password: password ?? this.password,
       remember: remember ?? this.remember,
+      pwdVisibility: pwdVisibility ?? this.pwdVisibility,
     );
   }
 
@@ -35,5 +39,5 @@ class LoginBlocState extends Equatable {
   }
 
   @override
-  List<Object> get props => [status, username, password, remember];
+  List<Object> get props => [status, username, password, remember, pwdVisibility];
 }
