@@ -5,14 +5,14 @@ import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_re
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 
-import 'bloc.dart';
+import 'cubit.dart';
 
-class LoginBloc extends Cubit<LoginBlocState> {
+class LoginCubit extends Cubit<LoginBlocState> {
 
   final AuthenticationRepository _authenticationRepository;
 
 
-  LoginBloc(this._authenticationRepository) : super(LoginBlocState());
+  LoginCubit(this._authenticationRepository) : super(LoginBlocState());
 
   loginUsernameChanged(String userNameText) {
 

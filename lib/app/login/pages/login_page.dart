@@ -1,4 +1,4 @@
-import 'package:arquetipo_flutter_bloc/app/login/blocs/bloc.dart';
+import 'package:arquetipo_flutter_bloc/app/login/blocs/cubit.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
 import 'package:arquetipo_flutter_bloc/generated/l10n.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          LoginBloc(RepositoryProvider.of<AuthenticationRepository>(context)),
+          LoginCubit(RepositoryProvider.of<AuthenticationRepository>(context)),
       child: LoginContent(),
     );
   }
@@ -70,14 +70,14 @@ class _UserNameInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginBlocState>(
+    return BlocBuilder<LoginCubit, LoginBlocState>(
       buildWhen: (previous, current) => previous.username != current.username,
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_usernameInput_textField'),
           onEditingComplete: () => focusNode.nextFocus(), // Move focus to next
           onChanged: (username) =>
-              context.read<LoginBloc>().loginUsernameChanged(username),
+              context.read<LoginCubit>().loginUsernameChanged(username),
           decoration: InputDecoration(
             hintText: S.of(context).username,
             errorText:
@@ -96,7 +96,7 @@ class _PasswordInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginBlocState>(
+    return BlocBuilder<LoginCubit, LoginBlocState>(
       buildWhen: (previous, current) =>
           previous.password != current.password ||
           previous.status != current.status ||
@@ -108,12 +108,12 @@ class _PasswordInput extends StatelessWidget {
           // Move focus to next
           obscureText: !state.pwdVisibility,
           onChanged: (password) =>
-              context.read<LoginBloc>().loginPasswordChanged(password),
+              context.read<LoginCubit>().loginPasswordChanged(password),
           decoration: InputDecoration(
             suffixIcon: IconButton(
                 icon: Icon(state.pwdVisibility ? Icons.remove_red_eye : Icons.remove_red_eye_outlined),
                 onPressed: () {
-                  context.read<LoginBloc>().loginPasswordVisibilityChanged(!state.pwdVisibility);
+                  context.read<LoginCubit>().loginPasswordVisibilityChanged(!state.pwdVisibility);
                 },
             ),
             hintText: S.of(context).password,
@@ -129,14 +129,14 @@ class _PasswordInput extends StatelessWidget {
 class _RememberUserInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginBlocState>(
+    return BlocBuilder<LoginCubit, LoginBlocState>(
         buildWhen: (previous, current) => previous.remember != current.remember,
         builder: (context, state) {
           return CheckboxListTile(
             title: Text(S.of(context).rememberUser),
             value: state.remember,
             onChanged: (bool remember) => {
-              context.read<LoginBloc>().loginRememberChanged(remember),
+              context.read<LoginCubit>().loginRememberChanged(remember),
             },
           );
         });
@@ -150,7 +150,7 @@ class _LoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginBloc, LoginBlocState>(
+    return BlocBuilder<LoginCubit, LoginBlocState>(
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.only(top: 30),
@@ -160,7 +160,7 @@ class _LoginButton extends StatelessWidget {
               color: Theme.of(context).primaryColor,
               onPressed: state.isValid()
                   ? () {
-                      context.read<LoginBloc>().loginSubmitted();
+                      context.read<LoginCubit>().loginSubmitted();
                     }
                   : null,
               child: state.status == FormzStatus.submissionInProgress

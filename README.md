@@ -1,16 +1,58 @@
-# arquetipo_flutter_bloc
+# AT Sistemas Ionic Archetype
 
-Arquetipo Atsistemas BLOC
+## Table of Contents
 
-## Getting Started
+- [Features](#features)
+- [Installation & Configuration](#installation)
+  - [Quick Start](#quick-start)
+- [Tips](#tips)
 
-This project is a starting point for a Flutter application.
+## <a name="features"></a>Features
 
-A few resources to get you started if this is your first Flutter project:
+- Flutter
+- translations
+- Bloc
+- Login + Home with button menu component
+- User service
+- Authetication bloc for autlogin
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## <a name="installation"></a>Installation & Configuration
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### <a name="quick-start"></a>Quick Start
+
+```bash
+
+# Clone the repo --depth 1 removes all but one .git commit history
+git clone --depth 1 repoURL
+
+# Change directory
+cd arquetipo-flutter_bloc
+
+# Install project dependencies
+pub get
+
+# Launch flutter
+flutter run
+```
+
+## <a name="tips"></a>Tips
+
+###If you want to watch the coverage report install:
+
+**Installing in Linux:**
+
+sudo apt-get update -qq -y
+sudo apt-get install lcov -y
+
+**Installing in Mac:**
+
+brew install lcov
+
+Run tests, generate coverage files and convert to HTML
+
+flutter test --coverage
+genhtml coverage/lcov.info -o coverage/html
+open coverage/html/index.html
+
+###Respect the message convention for the commits:
+http://karma-runner.github.io/6.1/dev/git-commit-msg.html
