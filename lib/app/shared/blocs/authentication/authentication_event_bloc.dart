@@ -1,5 +1,5 @@
-import 'package:arquetipo_flutter_bloc/shared/repositories/authentication_repository.dart';
-import 'package:arquetipo_flutter_bloc/shared/repositories/user-model.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/models/user-model.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class AuthenticationBlocEvent extends Equatable {

@@ -1,4 +1,4 @@
-import 'package:arquetipo_flutter_bloc/shared/repositories/user-model.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/models/user-model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageRepository {

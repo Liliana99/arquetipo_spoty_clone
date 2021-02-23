@@ -1,6 +1,6 @@
 import 'package:arquetipo_flutter_bloc/app/login/blocs/bloc.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
 import 'package:arquetipo_flutter_bloc/generated/l10n.dart';
-import 'package:arquetipo_flutter_bloc/shared/repositories/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,7 +77,7 @@ class _UserNameInput extends StatelessWidget {
           key: const Key('loginForm_usernameInput_textField'),
           onEditingComplete: () => focusNode.nextFocus(), // Move focus to next
           onChanged: (username) =>
-              context.read<LoginBloc>().add(LoginUsernameChanged(username)),
+              context.read<LoginBloc>().loginUsernameChanged(username),
           decoration: InputDecoration(
             hintText: S.of(context).username,
             errorText:
@@ -108,12 +108,12 @@ class _PasswordInput extends StatelessWidget {
           // Move focus to next
           obscureText: !state.pwdVisibility,
           onChanged: (password) =>
-              context.read<LoginBloc>().add(LoginPasswordChanged(password)),
+              context.read<LoginBloc>().loginPasswordChanged(password),
           decoration: InputDecoration(
             suffixIcon: IconButton(
                 icon: Icon(state.pwdVisibility ? Icons.remove_red_eye : Icons.remove_red_eye_outlined),
                 onPressed: () {
-                  context.read<LoginBloc>().add(LoginPasswordVisibilityChanged(!state.pwdVisibility));
+                  context.read<LoginBloc>().loginPasswordVisibilityChanged(!state.pwdVisibility);
                 },
             ),
             hintText: S.of(context).password,
@@ -136,7 +136,7 @@ class _RememberUserInput extends StatelessWidget {
             title: Text(S.of(context).rememberUser),
             value: state.remember,
             onChanged: (bool remember) => {
-              context.read<LoginBloc>().add(LoginRememberChanged(remember)),
+              context.read<LoginBloc>().loginRememberChanged(remember),
             },
           );
         });
@@ -160,7 +160,7 @@ class _LoginButton extends StatelessWidget {
               color: Theme.of(context).primaryColor,
               onPressed: state.isValid()
                   ? () {
-                      context.read<LoginBloc>().add(const LoginSubmitted());
+                      context.read<LoginBloc>().loginSubmitted();
                     }
                   : null,
               child: state.status == FormzStatus.submissionInProgress

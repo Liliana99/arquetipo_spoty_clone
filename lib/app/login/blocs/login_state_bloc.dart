@@ -1,5 +1,6 @@
-import 'package:arquetipo_flutter_bloc/shared/models/password_form_model.dart';
-import 'package:arquetipo_flutter_bloc/shared/models/username_form_model.dart';
+
+import 'package:arquetipo_flutter_bloc/app/shared/models/password_form_model.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/models/username_form_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 

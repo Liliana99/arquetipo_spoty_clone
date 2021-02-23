@@ -1,7 +1,3 @@
-import 'package:arquetipo_flutter_bloc/shared/blocs/authentication/bloc.dart';
-import 'package:arquetipo_flutter_bloc/shared/repositories/authentication_repository.dart';
-import 'package:arquetipo_flutter_bloc/shared/repositories/storage_repository.dart';
-import 'package:arquetipo_flutter_bloc/shared/utils/routes.dart';
 import 'package:arquetipo_flutter_bloc/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +5,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'app/home/pages/home_page.dart';
 import 'app/login/pages/login_page.dart';
+import 'app/shared/blocs/authentication/authentication_bloc.dart';
+import 'app/shared/blocs/authentication/authentication_state_bloc.dart';
+import 'app/shared/repositories/authentication_repository.dart';
+import 'app/shared/repositories/storage_repository.dart';
+import 'app/shared/utils/routes.dart';
 import 'generated/l10n.dart';
 
 void main() {

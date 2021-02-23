@@ -1,4 +1,4 @@
-import 'package:arquetipo_flutter_bloc/shared/widgets/bottom_menu_widget.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/widgets/bottom_menu_widget.dart';
 import 'package:flutter/material.dart';
 
 class MorePage extends StatelessWidget {

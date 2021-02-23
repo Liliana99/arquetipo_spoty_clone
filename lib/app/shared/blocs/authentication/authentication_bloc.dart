@@ -1,7 +1,6 @@
 import 'dart:async';
-
-import 'package:arquetipo_flutter_bloc/shared/repositories/authentication_repository.dart';
-import 'package:arquetipo_flutter_bloc/shared/repositories/user-model.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/models/user-model.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc.dart';
