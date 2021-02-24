@@ -21,12 +21,7 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class LoginContent extends StatefulWidget {
-  @override
-  _LoginContentState createState() => _LoginContentState();
-}
-
-class _LoginContentState extends State<LoginContent> {
+class LoginContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,7 +66,6 @@ class _UserNameInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginBlocState>(
-      buildWhen: (previous, current) => previous.username != current.username,
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_usernameInput_textField'),
@@ -97,10 +91,6 @@ class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginBlocState>(
-      buildWhen: (previous, current) =>
-          previous.password != current.password ||
-          previous.status != current.status ||
-          previous.pwdVisibility != current.pwdVisibility,
       builder: (context, state) {
         return TextField(
           key: const Key('loginForm_passwordInput_textField'),
@@ -111,10 +101,15 @@ class _PasswordInput extends StatelessWidget {
               context.read<LoginCubit>().loginPasswordChanged(password),
           decoration: InputDecoration(
             suffixIcon: IconButton(
-                icon: Icon(state.pwdVisibility ? Icons.remove_red_eye : Icons.remove_red_eye_outlined),
-                onPressed: () {
-                  context.read<LoginCubit>().loginPasswordVisibilityChanged(!state.pwdVisibility);
-                },
+              key: const Key('loginForm_eyeIcon_button'),
+              icon: Icon(state.pwdVisibility
+                  ? Icons.remove_red_eye
+                  : Icons.remove_red_eye_outlined),
+              onPressed: () {
+                context
+                    .read<LoginCubit>()
+                    .loginPasswordVisibilityChanged(!state.pwdVisibility);
+              },
             ),
             hintText: S.of(context).password,
             errorText:
@@ -130,9 +125,9 @@ class _RememberUserInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginBlocState>(
-        buildWhen: (previous, current) => previous.remember != current.remember,
         builder: (context, state) {
           return CheckboxListTile(
+            key: const Key('loginForm_remember_textField'),
             title: Text(S.of(context).rememberUser),
             value: state.remember,
             onChanged: (bool remember) => {
@@ -157,6 +152,7 @@ class _LoginButton extends StatelessWidget {
           child: SizedBox(
             width: double.infinity,
             child: RaisedButton(
+              key: const Key('loginForm_submit_button'),
               color: Theme.of(context).primaryColor,
               onPressed: state.isValid()
                   ? () {
@@ -168,6 +164,7 @@ class _LoginButton extends StatelessWidget {
                       width: 15,
                       height: 15,
                       child: CircularProgressIndicator(
+                        key: const Key('circular_progress_indicator'),
                         backgroundColor: Colors.white,
                       ),
                     )
