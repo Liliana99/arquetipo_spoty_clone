@@ -5,7 +5,7 @@ import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_re
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
 class MockAuthenticationRepository extends Mock implements AuthenticationRepository {}
 
@@ -17,8 +17,8 @@ void main() {
     setUp(() {
       authenticationRepository = MockAuthenticationRepository();
       loginCubit = LoginCubit(authenticationRepository);
-      when(authenticationRepository.logIn(username: 'test', password: 'pwd')).thenAnswer((_) => Future.value());
-      when(authenticationRepository.logIn(username: 'test', password: 'wrong_password')).thenThrow(new Exception());
+      when(() => authenticationRepository.logIn(username: 'test', password: 'pwd')).thenAnswer((_) => Future.value());
+      when(() => authenticationRepository.logIn(username: 'test', password: 'wrong_password')).thenThrow(new Exception());
 
     });
 
@@ -31,7 +31,7 @@ void main() {
       'emits new status when username changed',
       build: () => loginCubit,
       act: (cubit) => cubit.loginUsernameChanged('test'),
-      expect: [
+      expect: () => [
         LoginBlocState(
             username: Username.dirty('test'), status: FormzStatus.invalid)
       ],
@@ -41,7 +41,7 @@ void main() {
       'emits new status when password changed',
       build: () => loginCubit,
       act: (cubit) => cubit.loginPasswordChanged('pwd'),
-      expect: [
+      expect: () => [
         LoginBlocState(
             password: Password.dirty('pwd'), status: FormzStatus.invalid)
       ],
@@ -51,7 +51,7 @@ void main() {
       'emits new status when loginRemember changed',
       build: () => loginCubit,
       act: (cubit) => cubit.loginRememberChanged(true),
-      expect: [
+      expect: () => [
         LoginBlocState(
             remember: true)
       ],
@@ -61,7 +61,7 @@ void main() {
       'emits new status when password eye visibility changed',
       build: () => loginCubit,
       act: (cubit) => cubit.loginPasswordVisibilityChanged(true),
-      expect: [
+      expect: () => [
         LoginBlocState(
             pwdVisibility: true)
       ],
@@ -71,7 +71,7 @@ void main() {
       'emits new status when submit is called and form is not valid',
       build: () => loginCubit,
       act: (cubit) => cubit.loginSubmitted(),
-      expect: [
+      expect: () => [
         LoginBlocState(
             status: FormzStatus.submissionFailure)
       ],
@@ -80,12 +80,12 @@ void main() {
     blocTest<LoginCubit, LoginBlocState>(
       'emits new status when submit is called and form is valid and repository response is success',
       build: () => loginCubit,
-      seed: LoginBlocState(
+      seed: () => LoginBlocState(
           username: Username.dirty('test'),
           password: Password.dirty('pwd'),
           status: FormzStatus.valid),
       act: (cubit) => cubit.loginSubmitted(),
-      expect: [
+      expect: () => [
         LoginBlocState(
             username: Username.dirty('test'),
             password: Password.dirty('pwd'),
@@ -101,12 +101,12 @@ void main() {
     blocTest<LoginCubit, LoginBlocState>(
       'emits new status when submit is called and form is valid and repository response is error',
       build: () => loginCubit,
-      seed: LoginBlocState(
+      seed: () => LoginBlocState(
           username: Username.dirty('test'),
           password: Password.dirty('wrong_password'),
           status: FormzStatus.valid),
       act: (cubit) => cubit.loginSubmitted(),
-      expect: [
+      expect: () => [
         LoginBlocState(
             username: Username.dirty('test'),
             password: Password.dirty('wrong_password'),
