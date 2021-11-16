@@ -32,6 +32,7 @@ cd arquetipo-flutter_bloc
 pub get
 
 # Launch flutter
+flutter pub run build_runner build
 flutter run
 ```
 
