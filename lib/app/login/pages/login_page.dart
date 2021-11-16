@@ -151,9 +151,11 @@ class _LoginButton extends StatelessWidget {
           padding: const EdgeInsets.only(top: 30),
           child: SizedBox(
             width: double.infinity,
-            child: RaisedButton(
+            child: ElevatedButton(
               key: const Key('loginForm_submit_button'),
-              color: Theme.of(context).primaryColor,
+              style: ElevatedButton.styleFrom(
+                primary: Theme.of(context).primaryColor
+              ),
               onPressed: state.isValid()
                   ? () {
                       context.read<LoginCubit>().loginSubmitted();
