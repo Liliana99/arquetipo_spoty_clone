@@ -10,7 +10,7 @@ import 'app/shared/blocs/authentication/authentication_state_bloc.dart';
 import 'app/shared/repositories/authentication_repository.dart';
 import 'app/shared/repositories/storage_repository.dart';
 import 'app/shared/utils/routes.dart';
-import 'generated/l10n.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   final StorageRepository storageRepository = StorageRepository();
@@ -53,11 +53,11 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         localizationsDelegates: [
+          S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
-          S.delegate
         ],
-        supportedLocales: S.delegate.supportedLocales,
+        supportedLocales: S.supportedLocales,
         theme: buildThemeData(),
         navigatorKey: _navigatorKey,
         initialRoute: '/',
