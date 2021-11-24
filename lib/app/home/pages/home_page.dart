@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
           child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
               buildWhen: (previous, current) => current.status == AuthenticationStatus.authenticated,
               builder: (context, state) {
-            return Text('User:' + state.user.userName);
+            return Text('User:' + state.user!.userName!);
           }),
         ),
         bottomNavigationBar: BottomMenu(0));

@@ -1,4 +1,3 @@
-
 import 'package:arquetipo_flutter_bloc/app/shared/models/password_form_model.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/models/username_form_model.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
@@ -33,7 +32,7 @@ class LoginCubit extends Cubit<LoginBlocState> {
   }
 
 
-  loginRememberChanged(bool remember) {
+  loginRememberChanged(bool? remember) {
 
     emit(state.copyWith(
       remember: remember

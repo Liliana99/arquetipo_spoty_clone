@@ -73,9 +73,9 @@ class _UserNameInput extends StatelessWidget {
           onChanged: (username) =>
               context.read<LoginCubit>().loginUsernameChanged(username),
           decoration: InputDecoration(
-            hintText: S.of(context).username,
+            hintText: S.of(context)!.username,
             errorText:
-                state.username.invalid ? S.of(context).invalidUsername : null,
+                state.username.invalid ? S.of(context)!.invalidUsername : null,
           ),
         );
       },
@@ -111,9 +111,9 @@ class _PasswordInput extends StatelessWidget {
                     .loginPasswordVisibilityChanged(!state.pwdVisibility);
               },
             ),
-            hintText: S.of(context).password,
+            hintText: S.of(context)!.password,
             errorText:
-                state.password.invalid ? S.of(context).invalidPassword : null,
+                state.password.invalid ? S.of(context)!.invalidPassword : null,
           ),
         );
       },
@@ -128,9 +128,9 @@ class _RememberUserInput extends StatelessWidget {
         builder: (context, state) {
           return CheckboxListTile(
             key: const Key('loginForm_remember_textField'),
-            title: Text(S.of(context).rememberUser),
+            title: Text(S.of(context)!.rememberUser),
             value: state.remember,
-            onChanged: (bool remember) => {
+            onChanged: (bool? remember) => {
               context.read<LoginCubit>().loginRememberChanged(remember),
             },
           );
@@ -140,7 +140,7 @@ class _RememberUserInput extends StatelessWidget {
 
 class _LoginButton extends StatelessWidget {
   const _LoginButton({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -170,7 +170,7 @@ class _LoginButton extends StatelessWidget {
                         backgroundColor: Colors.white,
                       ),
                     )
-                  : Text(S.of(context).loginButton,
+                  : Text(S.of(context)!.loginButton,
                       style: TextStyle(fontSize: 20, color: Colors.white)),
             ),
           ),

@@ -11,7 +11,7 @@ class MockAuthenticationRepository extends Mock implements AuthenticationReposit
 
 void main() {
   group('LoginCubit', () {
-    LoginCubit loginCubit;
+    late LoginCubit loginCubit;
     AuthenticationRepository authenticationRepository;
 
     setUp(() {

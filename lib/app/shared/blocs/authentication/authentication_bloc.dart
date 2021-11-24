@@ -8,7 +8,7 @@ import 'bloc.dart';
 class AuthenticationBloc extends Bloc<AuthenticationBlocEvent, AuthenticationState> {
 
   final AuthenticationRepository repository;
-  StreamSubscription<AuthenticationStatus> _authenticationStatusSubscription;
+  StreamSubscription<AuthenticationStatus>? _authenticationStatusSubscription;
 
 
   AuthenticationBloc(AuthenticationState initialState, this.repository) : super(initialState) {
@@ -19,7 +19,7 @@ class AuthenticationBloc extends Bloc<AuthenticationBlocEvent, AuthenticationSta
   @override
   Stream<AuthenticationState> mapEventToState(AuthenticationBlocEvent event) async* {
     if(this.state.status == AuthenticationStatus.unknown) {
-      UserModel userModel = await repository.getUsermodel();
+      UserModel? userModel = await repository.getUsermodel();
       if(userModel != null) {
         add(AuthenticationStatusChanged(AuthenticationStatus.authenticated, userModel));
       }

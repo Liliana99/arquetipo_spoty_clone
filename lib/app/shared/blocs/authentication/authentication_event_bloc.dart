@@ -10,7 +10,7 @@ class AuthenticationStatusChanged extends AuthenticationBlocEvent {
   const AuthenticationStatusChanged(this.status, this.userModel);
 
   final AuthenticationStatus status;
-  final UserModel userModel;
+  final UserModel? userModel;
 
   @override
   List<Object> get props => [status];

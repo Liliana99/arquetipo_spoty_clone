@@ -37,7 +37,7 @@ void main() {
 class MyApp extends StatelessWidget {
   final _navigatorKey = GlobalKey<NavigatorState>();
 
-  NavigatorState get _navigator => _navigatorKey.currentState;
+  NavigatorState? get _navigator => _navigatorKey.currentState;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
 
         if (!currentFocus.hasPrimaryFocus &&
             currentFocus.focusedChild != null) {
-          currentFocus.focusedChild.unfocus();
+          currentFocus.focusedChild!.unfocus();
         }
       },
       child: MaterialApp(
@@ -66,10 +66,10 @@ class MyApp extends StatelessWidget {
           return BlocListener<AuthenticationBloc, AuthenticationState>(
             listener: (context, state) {
               if (state.status == AuthenticationStatus.authenticated) {
-                _navigator.pushAndRemoveUntil(
+                _navigator!.pushAndRemoveUntil(
                     HomePage.route(), (route) => false);
               } else if (state.status == AuthenticationStatus.unauthenticated) {
-                _navigator.pushAndRemoveUntil(
+                _navigator!.pushAndRemoveUntil(
                     LoginPage.route(), (route) => false);
               }
             },

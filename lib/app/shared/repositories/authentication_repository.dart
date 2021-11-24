@@ -9,7 +9,7 @@ class AuthenticationRepository {
 
   final StorageRepository storage;
   final _controller = StreamController<AuthenticationStatus>();
-  UserModel userModel;
+  UserModel? userModel;
 
   AuthenticationRepository(this.storage);
 
@@ -20,8 +20,8 @@ class AuthenticationRepository {
   }
 
   Future<void> logIn({
-    @required String username,
-    @required String password,
+    required String username,
+    required String password,
     bool rememberUser = false
   }) async {
     assert(username != null);
@@ -30,7 +30,7 @@ class AuthenticationRepository {
     userModel = UserModel('token', username);
 
     if(rememberUser) {
-      storage.saveUserData(userModel);
+      storage.saveUserData(userModel!);
     }
 
     await Future.delayed(
@@ -44,7 +44,7 @@ class AuthenticationRepository {
     _controller.add(AuthenticationStatus.unauthenticated);
   }
 
-  Future<UserModel> getUsermodel() async  {
+  Future<UserModel?> getUsermodel() async  {
     if(storage.prefs == null) {
       await storage.init();
     }

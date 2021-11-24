@@ -14,13 +14,13 @@ class MenuItems {
 
 List<MenuItems Function(BuildContext)> items = [
   (BuildContext context) =>
-      MenuItems(Icon(Icons.home), S.of(context).menuHome, '/home'),
+      MenuItems(Icon(Icons.home), S.of(context)!.menuHome, '/home'),
   (BuildContext context) =>
-      MenuItems(Icon(Icons.extension), S.of(context).menuMore, '/more'),
+      MenuItems(Icon(Icons.extension), S.of(context)!.menuMore, '/more'),
   (BuildContext context) =>
-      MenuItems(Icon(Icons.sports_bar), S.of(context).menuRandom, '/random'),
+      MenuItems(Icon(Icons.sports_bar), S.of(context)!.menuRandom, '/random'),
   (BuildContext context) =>
-      MenuItems(Icon(Icons.settings), S.of(context).menuLogout, 'logout'),
+      MenuItems(Icon(Icons.settings), S.of(context)!.menuLogout, 'logout'),
 ];
 
 class BottomMenu extends StatelessWidget {
