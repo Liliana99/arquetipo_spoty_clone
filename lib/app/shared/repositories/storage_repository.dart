@@ -3,9 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageRepository {
   SharedPreferences? prefs;
-
-  StorageRepository() {}
-
+  
   init() async {
     prefs = await SharedPreferences.getInstance();
   }

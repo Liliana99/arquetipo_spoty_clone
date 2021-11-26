@@ -23,9 +23,6 @@ class AuthenticationRepository {
     required String password,
     bool rememberUser = false
   }) async {
-    assert(username != null);
-    assert(password != null);
-
     userModel = UserModel('token', username);
 
     if(rememberUser) {
