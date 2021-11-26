@@ -36,6 +36,10 @@ flutter pub run build_runner build
 flutter run
 ```
 
+# Environments
+for dev: flutter run --dart-define=ENVIRONMENT=DEV or flutter run
+for prod: flutter run --dart-define=ENVIRONMENT=PROD
+
 ## <a name="tips"></a>Tips
 
 ###If you want to watch the coverage report install:

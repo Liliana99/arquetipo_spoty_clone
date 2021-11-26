@@ -5,6 +5,8 @@ import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_re
 import 'package:arquetipo_flutter_bloc/app/shared/widgets/bottom_menu_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dio/dio.dart';
+
 
 class HomePage extends StatelessWidget {
   static Route route() {
@@ -13,6 +15,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final client = TasksRepository(RepositoryProvider.of<Dio>(context));
+    client.getTasks().then((value) => print(value.first.title));
+
     return Scaffold(
         body: Center(
           child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
