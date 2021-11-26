@@ -1,3 +1,4 @@
+import 'package:arquetipo_flutter_bloc/app/home/repositories/tasks_repository.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_bloc.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_state_bloc.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';

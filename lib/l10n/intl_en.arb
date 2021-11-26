@@ -5,8 +5,8 @@
     "invalidPassword": "invalid password",
     "rememberUser": "Remember user",
     "loginButton": "Login",
-    "menuHome": "Inicio",
-    "menuMore": "Más",
+    "menuHome": "Home",
+    "menuMore": "More",
     "menuRandom": "Random",
     "menuLogout": "Logout"
 }
