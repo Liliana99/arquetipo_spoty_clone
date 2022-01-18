@@ -12,7 +12,7 @@ class TaskWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
-            leading: Image.network(task.avatar),
+            leading: CircleAvatar(backgroundImage: NetworkImage(task.avatar)),
             title: Text(task.title),
             subtitle: Text(task.description),
           ),

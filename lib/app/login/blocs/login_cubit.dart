@@ -1,8 +1,7 @@
-import 'package:arquetipo_flutter_bloc/app/shared/models/password_form_model.dart';
-import 'package:arquetipo_flutter_bloc/app/shared/models/username_form_model.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 import 'cubit.dart';
 
@@ -10,32 +9,13 @@ class LoginCubit extends Cubit<LoginBlocState> {
 
   final AuthenticationRepository _authenticationRepository;
 
-
   LoginCubit(this._authenticationRepository) : super(LoginBlocState());
 
-  loginUsernameChanged(String userNameText) {
-
-    final username = Username.dirty(userNameText);
+  formChanged(GlobalKey<FormBuilderState> form) {
+    form.currentState!.save();
     emit(state.copyWith(
-      username: username,
-      status: Formz.validate([state.username, username]),
-    ));
-  }
-
-  loginPasswordChanged(String passwordText) {
-
-    final password = Password.dirty(passwordText);
-    emit(state.copyWith(
-      password: password,
-      status: Formz.validate([state.password, password]),
-    ));
-  }
-
-
-  loginRememberChanged(bool? remember) {
-
-    emit(state.copyWith(
-      remember: remember
+      status: form.currentState!.validate(),
+      value: form.currentState!.value
     ));
   }
 
@@ -46,24 +26,23 @@ class LoginCubit extends Cubit<LoginBlocState> {
     ));
   }
 
-
   loginSubmitted() async {
     if(state.isValid()) {
-      emit(state.copyWith(status: FormzStatus.submissionInProgress));
+      emit(state.copyWith(submissionInProgress: true));
 
       try {
         await _authenticationRepository.logIn(
-          username: state.username.value,
-          password: state.password.value,
-          rememberUser: state.remember,
+          username: state.value['userName'],
+          password: state.value['password'],
+          rememberUser: state.value['remember'],
         );
-        emit(state.copyWith(status: FormzStatus.submissionSuccess));
+        emit(state.copyWith(submissionInProgress: false));
       } on Exception catch (_) {
-        emit(state.copyWith(status: FormzStatus.submissionFailure));
+        emit(state.copyWith(submissionInProgress: false));
       }
 
     } else {
-      emit(state.copyWith(status: FormzStatus.submissionFailure));
+      emit(state.copyWith(submissionInProgress: false));
     }
   }
 

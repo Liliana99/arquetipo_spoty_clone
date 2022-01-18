@@ -1,11 +1,13 @@
 import 'package:arquetipo_flutter_bloc/app/login/blocs/cubit.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formz/formz.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 
 class LoginPage extends StatelessWidget {
   static Route route() {
@@ -44,17 +46,25 @@ class LoginContent extends StatelessWidget {
 }
 
 class LoginForm extends StatelessWidget {
+
+  final formKey = GlobalKey<FormBuilderState>();
+
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
 
-    return Column(
-      children: [
-        _UserNameInput(node),
-        _PasswordInput(node),
-        _RememberUserInput(),
-        _LoginButton()
-      ],
+    return FormBuilder(
+      key: formKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      onChanged: () => BlocProvider.of<LoginCubit>(context).formChanged(formKey),
+      child: Column(
+        children: [
+          _UserNameInput(node),
+          _PasswordInput(node),
+          _RememberUserInput(),
+          _LoginButton()
+        ],
+      ),
     );
   }
 }
@@ -66,20 +76,13 @@ class _UserNameInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginBlocState>(
-      builder: (context, state) {
-        return TextField(
-          key: const Key('loginForm_usernameInput_textField'),
-          onEditingComplete: () => focusNode.nextFocus(), // Move focus to next
-          onChanged: (username) =>
-              context.read<LoginCubit>().loginUsernameChanged(username),
-          decoration: InputDecoration(
-            hintText: S.of(context)!.username,
-            errorText:
-                state.username.invalid ? S.of(context)!.invalidUsername : null,
-          ),
-        );
-      },
+    return FormBuilderTextField(
+      name: 'userName',
+      onEditingComplete: () => focusNode.nextFocus(), // Move focus to next
+      decoration: InputDecoration(
+        hintText: S.of(context)!.username,
+      ),
+      validator: FormBuilderValidators.required(context, errorText: S.of(context)!.invalidUsername),
     );
   }
 }
@@ -93,13 +96,11 @@ class _PasswordInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginBlocState>(
       builder: (context, state) {
-        return TextField(
-          key: const Key('loginForm_passwordInput_textField'),
+        return FormBuilderTextField(
+          name: 'password',
           onEditingComplete: () => {focusNode.unfocus()},
           // Move focus to next
           obscureText: !state.pwdVisibility,
-          onChanged: (password) =>
-              context.read<LoginCubit>().loginPasswordChanged(password),
           decoration: InputDecoration(
             suffixIcon: IconButton(
               key: const Key('loginForm_eyeIcon_button'),
@@ -113,29 +114,33 @@ class _PasswordInput extends StatelessWidget {
               },
             ),
             hintText: S.of(context)!.password,
-            errorText:
-                state.password.invalid ? S.of(context)!.invalidPassword : null,
           ),
+          validator: FormBuilderValidators.required(context, errorText: S.of(context)!.invalidPassword),
         );
       },
     );
   }
 }
 
+// Custom form builder example
 class _RememberUserInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginBlocState>(
-        builder: (context, state) {
-          return CheckboxListTile(
+          return FormBuilderField(
+            name: 'remember',
             key: const Key('loginForm_remember_textField'),
-            title: Text(S.of(context)!.rememberUser),
-            value: state.remember,
-            onChanged: (bool? remember) => {
-              context.read<LoginCubit>().loginRememberChanged(remember),
+            initialValue: false,
+            builder: (FormFieldState<bool> field) {
+              return CheckboxListTile(
+                key: const Key('loginForm_remember_textField'),
+                title: Text(S.of(context)!.rememberUser),
+                value: field.value,
+                onChanged: (bool? remember) => {
+                  field.didChange(remember),
+                },
+              );
             },
           );
-        });
   }
 }
 
@@ -148,6 +153,7 @@ class _LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginBlocState>(
       builder: (context, state) {
+
         return Padding(
           padding: const EdgeInsets.only(top: 30),
           child: SizedBox(
@@ -162,7 +168,7 @@ class _LoginButton extends StatelessWidget {
                       context.read<LoginCubit>().loginSubmitted();
                     }
                   : null,
-              child: state.status == FormzStatus.submissionInProgress
+              child: state.submissionInProgress
                   ? SizedBox(
                       width: 15,
                       height: 15,

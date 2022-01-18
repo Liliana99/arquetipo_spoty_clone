@@ -13,7 +13,7 @@ class ENV {
     return _instance;
   }
 
-  Environment config = EnvDev();
+  late Environment config;
 
   initConfig(String environment) {
     config = _getConfig(environment);

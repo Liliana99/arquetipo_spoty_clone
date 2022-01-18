@@ -1,13 +1,10 @@
 import 'package:arquetipo_flutter_bloc/app/login/blocs/cubit.dart';
 import 'package:arquetipo_flutter_bloc/app/login/pages/login_page.dart';
-import 'package:arquetipo_flutter_bloc/app/shared/models/password_form_model.dart';
-import 'package:arquetipo_flutter_bloc/app/shared/models/username_form_model.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:formz/formz.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -45,7 +42,7 @@ void main() {
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pump();
 
-      verify(() => loginBloc!.loginUsernameChanged('test')).called(1);
+      verify(() => loginBloc!.formChanged(GlobalKey<FormBuilderState>())).called(1);
     });
 
     testWidgets('password changesCorrectly', (WidgetTester tester) async {

@@ -1,32 +1,26 @@
-
-import 'package:arquetipo_flutter_bloc/app/shared/models/password_form_model.dart';
-import 'package:arquetipo_flutter_bloc/app/shared/models/username_form_model.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
-import 'package:formz/formz.dart';
 part 'login_state_bloc.g.dart';
 
 
 @CopyWith()
 class LoginBlocState extends Equatable {
   const LoginBlocState({
-    this.status = FormzStatus.pure,
-    this.username = const Username.pure(),
-    this.password = const Password.pure(),
-    this.remember = false,
+    this.status = false,
     this.pwdVisibility = false,
+    this.submissionInProgress = false,
+    this.value = const {}
   });
 
-  final FormzStatus status;
-  final Username username;
-  final Password password;
-  final bool remember;
+  final bool status;
   final bool pwdVisibility;
+  final bool submissionInProgress;
+  final Map<String, dynamic> value;
 
   bool isValid() {
-    return Formz.validate([this.username, this.password]).isValid;
+    return status;
   }
 
   @override
-  List<Object> get props => [status, username, password, remember, pwdVisibility];
+  List<Object> get props => [status, pwdVisibility];
 }
