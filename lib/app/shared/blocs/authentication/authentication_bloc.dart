@@ -21,7 +21,8 @@ class AuthenticationBloc extends Bloc<AuthenticationBlocEvent, AuthenticationSta
     if(this.state.status == AuthenticationStatus.unknown) {
       UserModel? userModel = await repository.getUsermodel();
       if(userModel != null) {
-        add(AuthenticationStatusChanged(AuthenticationStatus.authenticated, userModel));
+       yield await _mapAuthenticationStatusChangedToState(AuthenticationStatusChanged(AuthenticationStatus.authenticated, userModel));
+       return;
       }
     }
     if (event is AuthenticationStatusChanged) {
