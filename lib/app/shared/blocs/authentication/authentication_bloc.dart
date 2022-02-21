@@ -12,24 +12,23 @@ class AuthenticationBloc extends Bloc<AuthenticationBlocEvent, AuthenticationSta
 
 
   AuthenticationBloc(AuthenticationState initialState, this.repository) : super(initialState) {
+
+    on<AuthenticationBlocEvent>((event, emit) async {
+      if(this.state.status == AuthenticationStatus.unknown) {
+        UserModel? userModel = await repository.getUsermodel();
+        if(userModel != null) {
+          emit(await _mapAuthenticationStatusChangedToState(AuthenticationStatusChanged(AuthenticationStatus.authenticated, userModel)));
+          return;
+        }
+      }
+      if (event is AuthenticationStatusChanged) {
+        emit(await _mapAuthenticationStatusChangedToState(event));
+      } else if (event is AuthenticationLogoutRequested) {
+        repository.logOut();
+      }
+    });
     _authenticationStatusSubscription = this.repository.status.listen(
             (status) => add(AuthenticationStatusChanged(status, repository.userModel)));
-  }
-
-  @override
-  Stream<AuthenticationState> mapEventToState(AuthenticationBlocEvent event) async* {
-    if(this.state.status == AuthenticationStatus.unknown) {
-      UserModel? userModel = await repository.getUsermodel();
-      if(userModel != null) {
-       yield await _mapAuthenticationStatusChangedToState(AuthenticationStatusChanged(AuthenticationStatus.authenticated, userModel));
-       return;
-      }
-    }
-    if (event is AuthenticationStatusChanged) {
-      yield await _mapAuthenticationStatusChangedToState(event);
-    } else if (event is AuthenticationLogoutRequested) {
-      repository.logOut();
-    }
   }
 
   @override

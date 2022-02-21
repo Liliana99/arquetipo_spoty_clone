@@ -26,7 +26,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.17.0
-  flutter_bloc: ^7.3.3
+  flutter_bloc: ^8.0.1
   equatable: ^2.0.3
   shared_preferences: ^2.0.9
   copy_with_extension: ^2.0.2
@@ -42,7 +42,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  bloc_test: ^8.5.0
+  bloc_test: ^9.0.2
   mocktail: ^0.2.0
   build_runner: ^2.1.5
   copy_with_extension_gen: ^2.0.3
