@@ -1,13 +1,13 @@
 import 'package:arquetipo_flutter_bloc/app/login/blocs/cubit.dart';
-import 'package:arquetipo_flutter_bloc/app/shared/models/password_form_model.dart';
-import 'package:arquetipo_flutter_bloc/app/shared/models/username_form_model.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:formz/formz.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockAuthenticationRepository extends Mock implements AuthenticationRepository {}
+class MockAuthenticationRepository extends Mock
+    implements AuthenticationRepository {}
 
 void main() {
   group('LoginCubit', () {
@@ -17,43 +17,47 @@ void main() {
     setUp(() {
       authenticationRepository = MockAuthenticationRepository();
       loginCubit = LoginCubit(authenticationRepository);
-      when(() => authenticationRepository.logIn(username: 'test', password: 'pwd')).thenAnswer((_) => Future.value());
-      when(() => authenticationRepository.logIn(username: 'test', password: 'wrong_password')).thenThrow(new Exception());
-
+      when(() =>
+              authenticationRepository.logIn(username: 'test', password: 'pwd'))
+          .thenAnswer((_) => Future.value());
+      when(() => authenticationRepository.logIn(
+          username: 'test',
+          password: 'wrong_password')).thenThrow(new Exception());
     });
 
     test('initial state is all forms empty', () {
-      expect(loginCubit.state.username.value, '');
-      expect(loginCubit.state.password.value, '');
+      expect(loginCubit.state.value['username'], '');
+      expect(loginCubit.state.value['password'], '');
+      expect(loginCubit.state.value['remember'], false);
     });
 
     blocTest<LoginCubit, LoginBlocState>(
       'emits new status when username changed',
       build: () => loginCubit,
-      act: (cubit) => cubit.loginUsernameChanged('test'),
+      act: (cubit) => cubit.formChanged(GlobalKey<FormBuilderState>()
+        ..currentState!.patchValue({'username': 'test'})),
       expect: () => [
-        LoginBlocState(
-            username: Username.dirty('test'), status: FormzStatus.invalid)
+        LoginBlocState(value: {'username': 'test'}, status: false)
       ],
     );
 
     blocTest<LoginCubit, LoginBlocState>(
       'emits new status when password changed',
       build: () => loginCubit,
-      act: (cubit) => cubit.loginPasswordChanged('pwd'),
+      act: (cubit) => cubit.formChanged(GlobalKey<FormBuilderState>()
+        ..currentState!.patchValue({'password': 'test'})),
       expect: () => [
-        LoginBlocState(
-            password: Password.dirty('pwd'), status: FormzStatus.invalid)
+        LoginBlocState(value: {'password': 'test'}, status: false)
       ],
     );
 
     blocTest<LoginCubit, LoginBlocState>(
       'emits new status when loginRemember changed',
       build: () => loginCubit,
-      act: (cubit) => cubit.loginRememberChanged(true),
+      act: (cubit) => cubit.formChanged(GlobalKey<FormBuilderState>()
+        ..currentState!.patchValue({'remember': true})),
       expect: () => [
-        LoginBlocState(
-            remember: true)
+        LoginBlocState(value: {'remember': true}, status: false)
       ],
     );
 
@@ -61,40 +65,31 @@ void main() {
       'emits new status when password eye visibility changed',
       build: () => loginCubit,
       act: (cubit) => cubit.loginPasswordVisibilityChanged(true),
-      expect: () => [
-        LoginBlocState(
-            pwdVisibility: true)
-      ],
+      expect: () => [LoginBlocState(pwdVisibility: true)],
     );
 
     blocTest<LoginCubit, LoginBlocState>(
       'emits new status when submit is called and form is not valid',
       build: () => loginCubit,
       act: (cubit) => cubit.loginSubmitted(),
-      expect: () => [
-        LoginBlocState(
-            status: FormzStatus.submissionFailure)
-      ],
+      expect: () => [LoginBlocState(submissionInProgress: false)],
     );
 
     blocTest<LoginCubit, LoginBlocState>(
       'emits new status when submit is called and form is valid and repository response is success',
       build: () => loginCubit,
       seed: () => LoginBlocState(
-          username: Username.dirty('test'),
-          password: Password.dirty('pwd'),
-          status: FormzStatus.valid),
+          value: {'username': 'test', 'password': 'pwd'}, status: true),
       act: (cubit) => cubit.loginSubmitted(),
       expect: () => [
         LoginBlocState(
-            username: Username.dirty('test'),
-            password: Password.dirty('pwd'),
-            status: FormzStatus.submissionInProgress),
+            value: {'username': 'test', 'password': 'pwd'},
+            submissionInProgress: true,
+            status: true),
         LoginBlocState(
-            username: Username.dirty('test'),
-            password: Password.dirty('pwd'),
-            status: FormzStatus.submissionSuccess),
-
+            value: {'username': 'test', 'password': 'pwd'},
+            submissionInProgress: false,
+            status: true),
       ],
     );
 
@@ -102,19 +97,17 @@ void main() {
       'emits new status when submit is called and form is valid and repository response is error',
       build: () => loginCubit,
       seed: () => LoginBlocState(
-          username: Username.dirty('test'),
-          password: Password.dirty('wrong_password'),
-          status: FormzStatus.valid),
+          value: {'username': 'test', 'password': 'pwd'}, status: true),
       act: (cubit) => cubit.loginSubmitted(),
       expect: () => [
         LoginBlocState(
-            username: Username.dirty('test'),
-            password: Password.dirty('wrong_password'),
-            status: FormzStatus.submissionInProgress),
+            value: {'username': 'test', 'password': 'pwd'},
+            submissionInProgress: true,
+            status: true),
         LoginBlocState(
-            username: Username.dirty('test'),
-            password: Password.dirty('wrong_password'),
-            status: FormzStatus.submissionFailure),
+            value: {'username': 'test', 'password': 'pwd'},
+            submissionInProgress: false,
+            status: true),
       ],
     );
   });

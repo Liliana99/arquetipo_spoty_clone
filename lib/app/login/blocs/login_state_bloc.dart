@@ -9,7 +9,11 @@ class LoginBlocState extends Equatable {
     this.status = false,
     this.pwdVisibility = false,
     this.submissionInProgress = false,
-    this.value = const {}
+    this.value = const {
+      'username': '',
+      'password': '',
+      'remember' :  false,
+    }
   });
 
   final bool status;

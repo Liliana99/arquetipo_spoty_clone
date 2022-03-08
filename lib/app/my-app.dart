@@ -11,7 +11,6 @@ import 'home/pages/home_page.dart';
 import 'login/pages/login_page.dart';
 import 'shared/utils/routes.dart';
 
-
 class MyApp extends StatelessWidget {
   final _navigatorKey = GlobalKey<NavigatorState>();
 
@@ -43,11 +42,11 @@ class MyApp extends StatelessWidget {
           return BlocListener<AuthenticationBloc, AuthenticationState>(
             listener: (context, state) {
               if (state.status == AuthenticationStatus.authenticated) {
-                _navigator!.pushAndRemoveUntil(
-                    HomePage.route(), (route) => false);
+                _navigator!
+                    .pushAndRemoveUntil(HomePage.route(), (route) => false);
               } else if (state.status == AuthenticationStatus.unauthenticated) {
-                _navigator!.pushAndRemoveUntil(
-                    LoginPage.route(), (route) => false);
+                _navigator!
+                    .pushAndRemoveUntil(LoginPage.route(), (route) => false);
               }
             },
             child: child,

@@ -3,6 +3,7 @@ import 'package:arquetipo_flutter_bloc/app/login/pages/login_page.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -45,15 +46,6 @@ void main() {
       verify(() => loginBloc!.formChanged(GlobalKey<FormBuilderState>())).called(1);
     });
 
-    testWidgets('password changesCorrectly', (WidgetTester tester) async {
-      // Build our app and trigger a frame.
-      await buildWidget(loginBloc, tester);
-      await tester.enterText(find.byKey(Key('loginForm_passwordInput_textField')), 'test');
-      await tester.testTextInput.receiveAction(TextInputAction.done);
-      await tester.pump();
-
-      verify(() => loginBloc!.loginPasswordChanged('test')).called(1);
-    });
 
     testWidgets('password eyeIcon changes correctly', (WidgetTester tester) async {
       // Build our app and trigger a frame.
@@ -63,13 +55,6 @@ void main() {
       verify(() => loginBloc!.loginPasswordVisibilityChanged(true)).called(1);
     });
 
-    testWidgets('remember changesCorrectly', (WidgetTester tester) async {
-      // Build our app and trigger a frame.
-      await buildWidget(loginBloc, tester);
-      await tester.tap(find.byKey(Key('loginForm_remember_textField')));
-      await tester.pumpAndSettle();
-      verify(() => loginBloc!.loginRememberChanged(true)).called(1);
-    });
 
     testWidgets('submit button called correctly', (WidgetTester tester) async {
       // Build our app and trigger a frame.
@@ -81,7 +66,7 @@ void main() {
 
     testWidgets('show in progress when status is in progress', (WidgetTester tester) async {
       // Build our app and trigger a frame.
-      when(() => loginBloc!.state).thenAnswer((_) => LoginBlocState(status: FormzStatus.submissionInProgress));
+      when(() => loginBloc!.state).thenAnswer((_) => LoginBlocState(submissionInProgress: true));
       await tester.pumpWidget(BlocProvider<LoginCubit>(
           create: (context) => loginBloc!,
           child: MaterialApp(home: LoginContent(),
@@ -100,7 +85,7 @@ void main() {
 }
 
 Future buildWidget(MockLoginCubit? loginBloc, WidgetTester tester) async {
-  when(() => loginBloc!.state).thenAnswer((_) => LoginBlocState(username: Username.dirty('test'), password: Password.dirty('test')));
+  when(() => loginBloc!.state).thenAnswer((_) => LoginBlocState(value: {'username': 'test', 'password': 'test'}));
   await tester.pumpWidget(BlocProvider<LoginCubit>(
       create: (context) => loginBloc!,
       child: MaterialApp(home: LoginContent(),
