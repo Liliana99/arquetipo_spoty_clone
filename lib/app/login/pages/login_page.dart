@@ -169,7 +169,7 @@ class _LoginButton extends StatelessWidget {
                   primary: Theme.of(context).primaryColor),
               onPressed: state.isValid()
                   ? () => context.read<LoginCubit>().loginSubmitted()
-                  : () => print(state.isValid()),
+                  : null,
               child: state.submissionInProgress
                   ? SizedBox(
                       width: 15,
