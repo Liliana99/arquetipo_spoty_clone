@@ -3,7 +3,6 @@ import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_re
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +45,6 @@ class LoginContent extends StatelessWidget {
 }
 
 class LoginForm extends StatelessWidget {
-
   final formKey = GlobalKey<FormBuilderState>();
 
   @override
@@ -56,7 +54,11 @@ class LoginForm extends StatelessWidget {
     return FormBuilder(
       key: formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      onChanged: () => BlocProvider.of<LoginCubit>(context).formChanged(formKey),
+      onChanged: () {
+        formKey.currentState!.save();
+        BlocProvider.of<LoginCubit>(context).formChanged(
+            formKey.currentState!.value, formKey.currentState!.validate());
+      },
       child: Column(
         children: [
           _UserNameInput(node),
@@ -77,12 +79,15 @@ class _UserNameInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FormBuilderTextField(
+      key: Key('loginForm_usernameInput_textField'),
       name: 'userName',
-      onEditingComplete: () => focusNode.nextFocus(), // Move focus to next
+      onEditingComplete: () => focusNode.nextFocus(),
+      // Move focus to next
       decoration: InputDecoration(
         hintText: S.of(context)!.username,
       ),
-      validator: FormBuilderValidators.required(context, errorText: S.of(context)!.invalidUsername),
+      validator: FormBuilderValidators.required(context,
+          errorText: S.of(context)!.invalidUsername),
     );
   }
 }
@@ -115,7 +120,8 @@ class _PasswordInput extends StatelessWidget {
             ),
             hintText: S.of(context)!.password,
           ),
-          validator: FormBuilderValidators.required(context, errorText: S.of(context)!.invalidPassword),
+          validator: FormBuilderValidators.required(context,
+              errorText: S.of(context)!.invalidPassword),
         );
       },
     );
@@ -126,21 +132,21 @@ class _PasswordInput extends StatelessWidget {
 class _RememberUserInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-          return FormBuilderField(
-            name: 'remember',
-            key: const Key('loginForm_remember_textField'),
-            initialValue: false,
-            builder: (FormFieldState<bool> field) {
-              return CheckboxListTile(
-                key: const Key('loginForm_remember_textField'),
-                title: Text(S.of(context)!.rememberUser),
-                value: field.value,
-                onChanged: (bool? remember) => {
-                  field.didChange(remember),
-                },
-              );
-            },
-          );
+    return FormBuilderField(
+      name: 'remember',
+      key: const Key('loginForm_remember_textField'),
+      initialValue: false,
+      builder: (FormFieldState<bool> field) {
+        return CheckboxListTile(
+          key: const Key('loginForm_remember_textField'),
+          title: Text(S.of(context)!.rememberUser),
+          value: field.value,
+          onChanged: (bool? remember) => {
+            field.didChange(remember),
+          },
+        );
+      },
+    );
   }
 }
 
@@ -153,7 +159,6 @@ class _LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginBlocState>(
       builder: (context, state) {
-
         return Padding(
           padding: const EdgeInsets.only(top: 30),
           child: SizedBox(
@@ -161,13 +166,10 @@ class _LoginButton extends StatelessWidget {
             child: ElevatedButton(
               key: const Key('loginForm_submit_button'),
               style: ElevatedButton.styleFrom(
-                primary: Theme.of(context).primaryColor
-              ),
+                  primary: Theme.of(context).primaryColor),
               onPressed: state.isValid()
-                  ? () {
-                      context.read<LoginCubit>().loginSubmitted();
-                    }
-                  : null,
+                  ? () => context.read<LoginCubit>().loginSubmitted()
+                  : () => print(state.isValid()),
               child: state.submissionInProgress
                   ? SizedBox(
                       width: 15,

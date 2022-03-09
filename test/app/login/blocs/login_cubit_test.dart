@@ -34,8 +34,7 @@ void main() {
     blocTest<LoginCubit, LoginBlocState>(
       'emits new status when username changed',
       build: () => loginCubit,
-      act: (cubit) => cubit.formChanged(GlobalKey<FormBuilderState>()
-        ..currentState!.patchValue({'username': 'test'})),
+      act: (cubit) => cubit.formChanged({'username': 'test'}, false),
       expect: () => [
         LoginBlocState(value: {'username': 'test'}, status: false)
       ],
@@ -44,8 +43,7 @@ void main() {
     blocTest<LoginCubit, LoginBlocState>(
       'emits new status when password changed',
       build: () => loginCubit,
-      act: (cubit) => cubit.formChanged(GlobalKey<FormBuilderState>()
-        ..currentState!.patchValue({'password': 'test'})),
+      act: (cubit) => cubit.formChanged({'password': 'test'}, false),
       expect: () => [
         LoginBlocState(value: {'password': 'test'}, status: false)
       ],
@@ -54,8 +52,7 @@ void main() {
     blocTest<LoginCubit, LoginBlocState>(
       'emits new status when loginRemember changed',
       build: () => loginCubit,
-      act: (cubit) => cubit.formChanged(GlobalKey<FormBuilderState>()
-        ..currentState!.patchValue({'remember': true})),
+      act: (cubit) => cubit.formChanged({'remember': true}, false),
       expect: () => [
         LoginBlocState(value: {'remember': true}, status: false)
       ],
@@ -79,15 +76,15 @@ void main() {
       'emits new status when submit is called and form is valid and repository response is success',
       build: () => loginCubit,
       seed: () => LoginBlocState(
-          value: {'username': 'test', 'password': 'pwd'}, status: true),
+          value: {'userName': 'test', 'password': 'pwd', 'remember': false}, status: true),
       act: (cubit) => cubit.loginSubmitted(),
       expect: () => [
         LoginBlocState(
-            value: {'username': 'test', 'password': 'pwd'},
+            value: {'userName': 'test', 'password': 'pwd', 'remember': false},
             submissionInProgress: true,
             status: true),
         LoginBlocState(
-            value: {'username': 'test', 'password': 'pwd'},
+            value: {'userName': 'test', 'password': 'pwd', 'remember': false},
             submissionInProgress: false,
             status: true),
       ],
@@ -97,15 +94,15 @@ void main() {
       'emits new status when submit is called and form is valid and repository response is error',
       build: () => loginCubit,
       seed: () => LoginBlocState(
-          value: {'username': 'test', 'password': 'pwd'}, status: true),
+          value: {'userName': 'test', 'password': 'pwd', 'remember': false}, status: true),
       act: (cubit) => cubit.loginSubmitted(),
       expect: () => [
         LoginBlocState(
-            value: {'username': 'test', 'password': 'pwd'},
+            value: {'userName': 'test', 'password': 'pwd', 'remember': false},
             submissionInProgress: true,
             status: true),
         LoginBlocState(
-            value: {'username': 'test', 'password': 'pwd'},
+            value: {'userName': 'test', 'password': 'pwd', 'remember': false},
             submissionInProgress: false,
             status: true),
       ],

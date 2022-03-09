@@ -9,7 +9,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class MockLoginCubit extends MockCubit<LoginBlocState> implements LoginCubit {}
 class FakeLoginBlocState extends Fake implements LoginBlocState {}
 
@@ -28,6 +27,7 @@ void main() {
 
     testWidgets('renders correctly', (WidgetTester tester) async {
       // Build our app and trigger a frame.
+      when(() => loginBloc!.state).thenAnswer((_) => LoginBlocState(value: {'username': 'test', 'password': 'test'}));
       await buildWidget(loginBloc, tester);
 
       // Verify that our counter starts at 0.
@@ -38,17 +38,18 @@ void main() {
 
     testWidgets('username changes correctly', (WidgetTester tester) async {
       // Build our app and trigger a frame.
+      when(() => loginBloc!.state).thenAnswer((_) => LoginBlocState(value: {'username': 'test', 'password': 'test'}));
       await buildWidget(loginBloc, tester);
       await tester.enterText(find.byKey(Key('loginForm_usernameInput_textField')), 'test');
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pump();
-
-      verify(() => loginBloc!.formChanged(GlobalKey<FormBuilderState>())).called(1);
+      verify(() => loginBloc!.formChanged({'userName': 'test', 'password': null, 'remember': false}, false)).called(1);
     });
 
 
     testWidgets('password eyeIcon changes correctly', (WidgetTester tester) async {
       // Build our app and trigger a frame.
+      when(() => loginBloc!.state).thenAnswer((_) => LoginBlocState(value: {'username': 'test', 'password': 'test'}));
       await buildWidget(loginBloc, tester);
       await tester.tap(find.byKey(Key('loginForm_eyeIcon_button')));
       await tester.pumpAndSettle();
@@ -58,6 +59,7 @@ void main() {
 
     testWidgets('submit button called correctly', (WidgetTester tester) async {
       // Build our app and trigger a frame.
+      when(() => loginBloc!.state).thenAnswer((_) => LoginBlocState(status: true));
       await buildWidget(loginBloc, tester);
       await tester.tap(find.byKey(Key('loginForm_submit_button')));
       await tester.pumpAndSettle();
@@ -85,7 +87,6 @@ void main() {
 }
 
 Future buildWidget(MockLoginCubit? loginBloc, WidgetTester tester) async {
-  when(() => loginBloc!.state).thenAnswer((_) => LoginBlocState(value: {'username': 'test', 'password': 'test'}));
   await tester.pumpWidget(BlocProvider<LoginCubit>(
       create: (context) => loginBloc!,
       child: MaterialApp(home: LoginContent(),

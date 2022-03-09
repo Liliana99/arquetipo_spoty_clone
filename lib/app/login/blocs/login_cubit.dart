@@ -1,7 +1,5 @@
 import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 import 'cubit.dart';
 
@@ -11,11 +9,10 @@ class LoginCubit extends Cubit<LoginBlocState> {
 
   LoginCubit(this._authenticationRepository) : super(LoginBlocState());
 
-  formChanged(GlobalKey<FormBuilderState> form) {
-    form.currentState!.save();
+  formChanged(Map<String, dynamic> values, bool valid) {
     emit(state.copyWith(
-      status: form.currentState!.validate(),
-      value: form.currentState!.value
+      status: valid,
+      value: values
     ));
   }
 
@@ -37,6 +34,8 @@ class LoginCubit extends Cubit<LoginBlocState> {
           rememberUser: state.value['remember'],
         );
         emit(state.copyWith(submissionInProgress: false));
+
+
       } on Exception catch (_) {
         emit(state.copyWith(submissionInProgress: false));
       }

@@ -26,5 +26,5 @@ class LoginBlocState extends Equatable {
   }
 
   @override
-  List<Object> get props => [status, pwdVisibility, value];
+  List<Object> get props => [status, pwdVisibility, value, submissionInProgress];
 }
