@@ -1,6 +1,7 @@
 import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_bloc.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_state_bloc.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -9,6 +10,7 @@ import 'package:arquetipo_flutter_bloc/theme.dart';
 
 import 'home/pages/home_page.dart';
 import 'login/pages/login_page.dart';
+import 'shared/blocs/error/error_cubit.dart';
 import 'shared/utils/routes.dart';
 
 class MyApp extends StatelessWidget {
@@ -39,20 +41,44 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: routes,
         builder: (context, child) {
-          return BlocListener<AuthenticationBloc, AuthenticationState>(
-            listener: (context, state) {
-              if (state.status == AuthenticationStatus.authenticated) {
-                _navigator!
-                    .pushAndRemoveUntil(HomePage.route(), (route) => false);
-              } else if (state.status == AuthenticationStatus.unauthenticated) {
-                _navigator!
-                    .pushAndRemoveUntil(LoginPage.route(), (route) => false);
-              }
-            },
-            child: child,
+          return MultiBlocListener(
+            listeners: [
+              BlocListener<ErrorCubit, DioError?>(
+                listenWhen: (previous, current) => current != null,
+                listener: (context, state) => buildErrorDialog(context, state),
+              ),
+              BlocListener<AuthenticationBloc, AuthenticationState>(
+              listener: (context, state) {
+                if (state.status == AuthenticationStatus.authenticated) {
+                  _navigator!
+                      .pushAndRemoveUntil(HomePage.route(), (route) => false);
+                } else if (state.status == AuthenticationStatus.unauthenticated) {
+                  _navigator!
+                      .pushAndRemoveUntil(LoginPage.route(), (route) => false);
+                }
+              },
+            )],
+            child: child!,
           );
         },
       ),
     );
+  }
+  // unified error handler
+  Future<dynamic> buildErrorDialog(BuildContext context, DioError? state) {
+    return showDialog(
+        context: _navigator!.context,
+        builder: (_) => AlertDialog(
+          title: Text(S.of(context)!.errorServiceTitle),
+          content: Text(state!.message),
+          actions: [
+            TextButton(
+              child: Text(S.of(context)!.accept),
+              onPressed: () {
+                _navigator!.pop();
+              },
+            ),
+          ],
+        ));
   }
 }

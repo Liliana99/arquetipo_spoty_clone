@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'app/my-app.dart';
 import 'app/shared/blocs/authentication/authentication_bloc.dart';
 import 'app/shared/blocs/authentication/authentication_state_bloc.dart';
+import 'app/shared/blocs/error/error_cubit.dart';
+import 'app/shared/interceptors/rest_interceptor.dart';
 import 'app/shared/repositories/authentication_repository.dart';
 import 'app/shared/repositories/storage_repository.dart';
 import 'package:dio/dio.dart';
@@ -17,10 +19,14 @@ void main() {
     baseUrl: ENV().config.basePath
   ));
 
+  final authenticationRepository = AuthenticationRepository(storageRepository);
+  final errorCubit = ErrorCubit();
+  dio.interceptors.add(RestInterceptor(authenticationRepository, errorCubit));
+
   runApp(MultiRepositoryProvider(
     providers: [
       RepositoryProvider<AuthenticationRepository>(
-          create: (context) => AuthenticationRepository(storageRepository)),
+          create: (context) => authenticationRepository),
       RepositoryProvider<StorageRepository>(
           create: (context) => storageRepository),
       RepositoryProvider<Dio>(
@@ -31,7 +37,8 @@ void main() {
         BlocProvider<AuthenticationBloc>(
             create: (BuildContext context) => AuthenticationBloc(
                 AuthenticationState.unknown(),
-                RepositoryProvider.of<AuthenticationRepository>(context)))
+                RepositoryProvider.of<AuthenticationRepository>(context))),
+        BlocProvider(create: (BuildContext context) => errorCubit)
       ],
       child: MyApp(),
     ),

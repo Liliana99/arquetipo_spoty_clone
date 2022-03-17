@@ -14,7 +14,7 @@
 - Bloc
 - Login + Home with button menu component
 - User service
-- Authetication bloc for autlogin
+- Authentication bloc for autologin
 
 ## <a name="installation"></a>Installation & Configuration
 

@@ -8,5 +8,7 @@
     "menuHome": "Home",
     "menuMore": "More",
     "menuRandom": "Random",
-    "menuLogout": "Logout"
+    "menuLogout": "Logout",
+    "errorServiceTitle": "Service error",
+    "accept": "Accept"
 }
