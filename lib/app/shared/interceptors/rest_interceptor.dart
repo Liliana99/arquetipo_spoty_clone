@@ -30,7 +30,7 @@ class RestInterceptor extends Interceptor {
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
     print('ERROR[${err.response?.statusCode}] => PATH: ${err.requestOptions.path}');
-    if (err.response!.statusCode == 401) {
+    if (err.response?.statusCode == 401) {
       authenticationRepository.logOut();
     }
     errorCubit.showRestError(err);

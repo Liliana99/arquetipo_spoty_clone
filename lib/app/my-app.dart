@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:arquetipo_flutter_bloc/theme.dart';
+import 'package:go_router/go_router.dart';
 
 import 'home/pages/home_page.dart';
 import 'login/pages/login_page.dart';
@@ -14,9 +15,6 @@ import 'shared/blocs/error/error_cubit.dart';
 import 'shared/utils/routes.dart';
 
 class MyApp extends StatelessWidget {
-  final _navigatorKey = GlobalKey<NavigatorState>();
-
-  NavigatorState? get _navigator => _navigatorKey.currentState;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,7 @@ class MyApp extends StatelessWidget {
           currentFocus.focusedChild!.unfocus();
         }
       },
-      child: MaterialApp(
+      child: MaterialApp.router(
         title: 'Flutter Demo',
         localizationsDelegates: [
           S.delegate,
@@ -37,9 +35,8 @@ class MyApp extends StatelessWidget {
         ],
         supportedLocales: S.supportedLocales,
         theme: buildThemeData(),
-        navigatorKey: _navigatorKey,
-        initialRoute: '/',
-        routes: routes,
+        routeInformationParser: router.routeInformationParser,
+        routerDelegate: router.routerDelegate,
         builder: (context, child) {
           return MultiBlocListener(
             listeners: [
@@ -50,11 +47,9 @@ class MyApp extends StatelessWidget {
               BlocListener<AuthenticationBloc, AuthenticationState>(
               listener: (context, state) {
                 if (state.status == AuthenticationStatus.authenticated) {
-                  _navigator!
-                      .pushAndRemoveUntil(HomePage.route(), (route) => false);
+                  router.go('/home');
                 } else if (state.status == AuthenticationStatus.unauthenticated) {
-                  _navigator!
-                      .pushAndRemoveUntil(LoginPage.route(), (route) => false);
+                  router.go('/login');
                 }
               },
             )],
@@ -67,7 +62,7 @@ class MyApp extends StatelessWidget {
   // unified error handler
   Future<dynamic> buildErrorDialog(BuildContext context, DioError? state) {
     return showDialog(
-        context: _navigator!.context,
+        context: router.navigator!.context,
         builder: (_) => AlertDialog(
           title: Text(S.of(context)!.errorServiceTitle),
           content: Text(state!.message),
@@ -75,7 +70,7 @@ class MyApp extends StatelessWidget {
             TextButton(
               child: Text(S.of(context)!.accept),
               onPressed: () {
-                _navigator!.pop();
+                Navigator.pop(router.navigator!.context);
               },
             ),
           ],
