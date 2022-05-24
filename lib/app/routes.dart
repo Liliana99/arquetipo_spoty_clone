@@ -33,7 +33,6 @@ GoRouter buildRoutes(AuthenticationBloc bloc) {
       ),
     ],
     redirect: (state) {
-      print('hola');
       if (bloc.state.status == AuthenticationStatus.authenticated) {
         return state.subloc == '/login'? '/home' : null;
       } else if (bloc.state.status == AuthenticationStatus.unauthenticated) {
