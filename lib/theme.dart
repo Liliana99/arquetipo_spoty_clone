@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
 ThemeData buildThemeData() {
-  return ThemeData(
-      primaryColor: Colors.blue,
-      accentColor: Colors.amberAccent
+  final ThemeData theme = ThemeData();
+
+  return theme.copyWith(
+    primaryColor: Colors.blue,
+    colorScheme: theme.colorScheme.copyWith(
+      secondary: Colors.amberAccent
+    ),
   );
 }

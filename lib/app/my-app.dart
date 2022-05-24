@@ -12,12 +12,12 @@ import 'package:go_router/go_router.dart';
 import 'home/pages/home_page.dart';
 import 'login/pages/login_page.dart';
 import 'shared/blocs/error/error_cubit.dart';
-import 'shared/utils/routes.dart';
+import 'routes.dart';
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
+    final router = buildRoutes(BlocProvider.of<AuthenticationBloc>(context));
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -38,42 +38,33 @@ class MyApp extends StatelessWidget {
         routeInformationParser: router.routeInformationParser,
         routerDelegate: router.routerDelegate,
         builder: (context, child) {
-          return MultiBlocListener(
-            listeners: [
-              BlocListener<ErrorCubit, DioError?>(
-                listenWhen: (previous, current) => current != null,
-                listener: (context, state) => buildErrorDialog(context, state),
-              ),
-              BlocListener<AuthenticationBloc, AuthenticationState>(
-              listener: (context, state) {
-                if (state.status == AuthenticationStatus.authenticated) {
-                  router.go('/home');
-                } else if (state.status == AuthenticationStatus.unauthenticated) {
-                  router.go('/login');
-                }
-              },
-            )],
-            child: child!,
+          return BlocListener<ErrorCubit, DioError?>(
+            listenWhen: (previous, current) => current != null,
+            listener: (context, state) =>
+                buildErrorDialog(context, state, router),
+            child: child,
           );
         },
       ),
     );
   }
+
   // unified error handler
-  Future<dynamic> buildErrorDialog(BuildContext context, DioError? state) {
+  Future<dynamic> buildErrorDialog(
+      BuildContext context, DioError? state, GoRouter router) {
     return showDialog(
         context: router.navigator!.context,
         builder: (_) => AlertDialog(
-          title: Text(S.of(context)!.errorServiceTitle),
-          content: Text(state!.message),
-          actions: [
-            TextButton(
-              child: Text(S.of(context)!.accept),
-              onPressed: () {
-                Navigator.pop(router.navigator!.context);
-              },
-            ),
-          ],
-        ));
+              title: Text(S.of(context)!.errorServiceTitle),
+              content: Text(state!.message),
+              actions: [
+                TextButton(
+                  child: Text(S.of(context)!.accept),
+                  onPressed: () {
+                    Navigator.pop(router.navigator!.context);
+                  },
+                ),
+              ],
+            ));
   }
 }
