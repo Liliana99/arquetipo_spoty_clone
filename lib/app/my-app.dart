@@ -14,10 +14,23 @@ import 'login/pages/login_page.dart';
 import 'shared/blocs/error/error_cubit.dart';
 import 'routes.dart';
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  late GoRouter router;
+
+  @override
+  void initState() {
+    router = buildRoutes(BlocProvider.of<AuthenticationBloc>(context));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final router = buildRoutes(BlocProvider.of<AuthenticationBloc>(context));
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
