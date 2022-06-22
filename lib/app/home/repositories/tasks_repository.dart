@@ -1,15 +1,12 @@
-import 'package:arquetipo_flutter_bloc/app/home/models/task_model.dart';
-import 'dart:async';
-import 'package:dio/dio.dart';
-import 'package:retrofit/http.dart';
+import '../models/task_model.dart';
+import '../providers/task_provider.dart';
 
-part "tasks_repository.g.dart";
+class TaskRepository {
+  final TaskProvider _tasksProvider;
 
-@RestApi()
-abstract class TasksRepository {
+  TaskRepository(this._tasksProvider);
 
-  factory TasksRepository(Dio dio, {String baseUrl}) = _TasksRepository;
-
-  @GET('task')
-  Future<List<TaskModel>> getTasks();
+  Future<List<TaskModel>> getTasks() {
+    return _tasksProvider.getTasks();
+  }
 }

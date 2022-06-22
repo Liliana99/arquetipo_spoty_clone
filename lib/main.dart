@@ -8,27 +8,29 @@ import 'app/shared/blocs/authentication/authentication_state_bloc.dart';
 import 'app/shared/blocs/error/error_cubit.dart';
 import 'app/shared/interceptors/rest_interceptor.dart';
 import 'app/shared/repositories/authentication_repository.dart';
-import 'app/shared/repositories/storage_repository.dart';
+import 'app/shared/providers/storage_provider.dart';
 import 'package:dio/dio.dart';
 
 void main() {
   const String envName = String.fromEnvironment('ENVIRONMENT', defaultValue: EnvDev.name);
   ENV().initConfig(envName);
-  final StorageRepository storageRepository = StorageRepository();
+  final StorageProvider storageProvider = StorageProvider();
   final dio = Dio(BaseOptions(
     baseUrl: ENV().config.basePath
   ));
 
-  final authenticationRepository = AuthenticationRepository(storageRepository);
+  final authenticationRepository = AuthenticationRepository(storageProvider);
   final errorCubit = ErrorCubit();
   dio.interceptors.add(RestInterceptor(authenticationRepository, errorCubit));
 
   runApp(MultiRepositoryProvider(
     providers: [
+      // Repositories
       RepositoryProvider<AuthenticationRepository>(
           create: (context) => authenticationRepository),
-      RepositoryProvider<StorageRepository>(
-          create: (context) => storageRepository),
+      // Providers
+      RepositoryProvider<StorageProvider>(
+          create: (context) => storageProvider),
       RepositoryProvider<Dio>(
           create: (context) => dio),
     ],

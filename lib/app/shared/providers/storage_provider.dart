@@ -1,7 +1,7 @@
 import 'package:arquetipo_flutter_bloc/app/shared/models/user-model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class StorageRepository {
+class StorageProvider {
   SharedPreferences? prefs;
   
   init() async {
