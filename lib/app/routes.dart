@@ -34,9 +34,9 @@ GoRouter buildRoutes(AuthenticationBloc bloc) {
     ],
     redirect: (state) {
       if (bloc.state.status == AuthenticationStatus.authenticated) {
-        return state.subloc == '/login'? '/home' : null;
+        return state.subloc.contains('/login') || state.subloc == '/' ? '/home' : null;
       } else if (bloc.state.status == AuthenticationStatus.unauthenticated) {
-        return  state.subloc == '/login' ? null : '/login';
+        return  state.subloc.contains('/login') ? null : '/login';
       }
     },
     refreshListenable: GoRouterRefreshStream(bloc.stream)

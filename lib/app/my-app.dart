@@ -1,6 +1,6 @@
+import 'dart:ui';
+
 import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_bloc.dart';
-import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_state_bloc.dart';
-import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,11 +8,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:arquetipo_flutter_bloc/theme.dart';
 import 'package:go_router/go_router.dart';
-
-import 'home/pages/home_page.dart';
-import 'login/pages/login_page.dart';
 import 'shared/blocs/error/error_cubit.dart';
 import 'routes.dart';
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+  };
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -41,10 +47,12 @@ class _MyAppState extends State<MyApp> {
       },
       child: MaterialApp.router(
         title: 'Flutter Demo',
+        scrollBehavior: MyCustomScrollBehavior(),
         localizationsDelegates: [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate
         ],
         supportedLocales: S.supportedLocales,
         theme: buildThemeData(),
