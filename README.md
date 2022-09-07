@@ -53,6 +53,9 @@ sudo apt-get install lcov -y
 
 brew install lcov
 
+**Installing in Windows:**
+https://stackoverflow.com/questions/62184806/how-to-view-code-coverage-as-html-in-windows/62185248#62185248
+
 Run tests, generate coverage files and convert to HTML
 
 flutter test --coverage
