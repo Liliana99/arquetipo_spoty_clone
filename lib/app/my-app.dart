@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_bloc.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    router = buildRoutes(BlocProvider.of<AuthenticationBloc>(context));
+    router = buildRoutes(BlocProvider.of<AuthenticationCubit>(context));
     super.initState();
   }
 

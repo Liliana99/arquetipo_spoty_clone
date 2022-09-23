@@ -3,12 +3,12 @@ import 'package:arquetipo_flutter_bloc/app/home/pages/more_page.dart';
 import 'package:arquetipo_flutter_bloc/app/home/pages/random_page.dart';
 import 'package:arquetipo_flutter_bloc/app/login/pages/login_page.dart';
 import 'package:arquetipo_flutter_bloc/app/login/pages/splash_page.dart';
-import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_bloc.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_cubit.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-GoRouter buildRoutes(AuthenticationBloc bloc) {
+GoRouter buildRoutes(AuthenticationCubit bloc) {
   return GoRouter(
     routes: <GoRoute>[
       GoRoute(

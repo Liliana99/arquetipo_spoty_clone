@@ -1,9 +1,8 @@
-import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_bloc.dart';
-import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_event_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../blocs/authentication/authentication_cubit.dart';
 
 class MenuItems {
   MenuItems(this.icon, this.label, this.route, {action = false});
@@ -45,8 +44,7 @@ class BottomMenu extends StatelessWidget {
         String route = items[index](context).route;
         final string = 'logout';
         if (route == string) {
-          BlocProvider.of<AuthenticationBloc>(context)
-              .add(AuthenticationLogoutRequested());
+          BlocProvider.of<AuthenticationCubit>(context).authenticationLogoutRequested();
           return;
         }
         GoRouter.of(context).go(route);

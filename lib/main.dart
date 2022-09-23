@@ -3,7 +3,7 @@ import 'package:arquetipo_flutter_bloc/env/environment_dev.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'app/my-app.dart';
-import 'app/shared/blocs/authentication/authentication_bloc.dart';
+import 'app/shared/blocs/authentication/authentication_cubit.dart';
 import 'app/shared/blocs/authentication/authentication_state_bloc.dart';
 import 'app/shared/blocs/error/error_cubit.dart';
 import 'app/shared/interceptors/rest_interceptor.dart';
@@ -36,10 +36,10 @@ void main() {
     ],
     child: MultiBlocProvider(
       providers: [
-        BlocProvider<AuthenticationBloc>(
-            create: (BuildContext context) => AuthenticationBloc(
+        BlocProvider<AuthenticationCubit>(
+            create: (BuildContext context) => AuthenticationCubit(
                 AuthenticationState.unknown(),
-                RepositoryProvider.of<AuthenticationRepository>(context))),
+                RepositoryProvider.of<AuthenticationRepository>(context)) ..initAuthentication()),
         BlocProvider(create: (BuildContext context) => errorCubit)
       ],
       child: MyApp(),
