@@ -8,11 +8,10 @@ import 'authentication_state_bloc.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   final AuthenticationRepository repository;
-  StreamSubscription<AuthenticationStatus>? _authenticationStatusSubscription;
 
   AuthenticationCubit(AuthenticationState initialState, this.repository)
       : super(initialState) {
-    _authenticationStatusSubscription = this.repository.status.listen(
+    this.repository.status.listen(
             (status) => emit(_mapAuthenticationStatusChangedToState(status)));
   }
 
