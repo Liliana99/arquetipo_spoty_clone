@@ -56,6 +56,7 @@ class _MyAppState extends State<MyApp> {
         ],
         supportedLocales: S.supportedLocales,
         theme: buildThemeData(),
+        routeInformationProvider: router.routeInformationProvider,
         routeInformationParser: router.routeInformationParser,
         routerDelegate: router.routerDelegate,
         builder: (context, child) {
