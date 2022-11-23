@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_cubit.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,6 +49,7 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp.router(
         title: 'Flutter Demo',
         scrollBehavior: MyCustomScrollBehavior(),
+        useInheritedMediaQuery: true, // TODO:  only for deveploment purpose
         localizationsDelegates: [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -64,7 +66,7 @@ class _MyAppState extends State<MyApp> {
             listenWhen: (previous, current) => current != null,
             listener: (context, state) =>
                 buildErrorDialog(context, state, router),
-            child: child,
+            child: DevicePreview.appBuilder(context, child),
           );
         },
       ),
@@ -74,8 +76,9 @@ class _MyAppState extends State<MyApp> {
   // unified error handler
   Future<dynamic> buildErrorDialog(
       BuildContext context, DioError? state, GoRouter router) {
+    final navigationContext = router.routerDelegate.navigatorKey.currentContext!;
     return showDialog(
-        context: router.navigator!.context,
+        context: navigationContext,
         builder: (_) => AlertDialog(
               title: Text(S.of(context)!.errorServiceTitle),
               content: Text(state!.message),
@@ -83,7 +86,7 @@ class _MyAppState extends State<MyApp> {
                 TextButton(
                   child: Text(S.of(context)!.accept),
                   onPressed: () {
-                    Navigator.pop(router.navigator!.context);
+                    Navigator.pop(navigationContext);
                   },
                 ),
               ],

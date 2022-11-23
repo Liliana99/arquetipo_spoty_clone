@@ -1,5 +1,7 @@
 import 'package:arquetipo_flutter_bloc/app/shared/utils/environment/env.dart';
 import 'package:arquetipo_flutter_bloc/env/environment_dev.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'app/my-app.dart';
@@ -10,6 +12,8 @@ import 'app/shared/interceptors/rest_interceptor.dart';
 import 'app/shared/repositories/authentication_repository.dart';
 import 'app/shared/providers/storage_provider.dart';
 import 'package:dio/dio.dart';
+
+import 'app/shared/utils/platform_checker.dart';
 
 void main() {
   const String envName = String.fromEnvironment('ENVIRONMENT', defaultValue: EnvDev.name);
@@ -42,7 +46,10 @@ void main() {
                 RepositoryProvider.of<AuthenticationRepository>(context)) ..initAuthentication()),
         BlocProvider(create: (BuildContext context) => errorCubit)
       ],
-      child: MyApp(),
+      child: DevicePreview(
+          enabled: !kReleaseMode && Util().isComputer(),
+          builder: (context) => MyApp()
+      ),
     ),
   ));
 }
