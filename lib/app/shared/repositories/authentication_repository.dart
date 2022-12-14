@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:arquetipo_flutter_bloc/app/shared/models/user-model.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/models/user_model.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/providers/storage_provider.dart';
 
 enum AuthenticationStatus { unknown, authenticated, unauthenticated }

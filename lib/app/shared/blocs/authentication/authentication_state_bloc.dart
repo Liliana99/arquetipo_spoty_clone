@@ -1,4 +1,4 @@
-import 'package:arquetipo_flutter_bloc/app/shared/models/user-model.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/models/user_model.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
 import 'package:equatable/equatable.dart';
 

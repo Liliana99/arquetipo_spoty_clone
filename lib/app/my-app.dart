@@ -1,6 +1,10 @@
 import 'dart:ui';
 
 import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_cubit.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/blocs/version/version_cubit.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/blocs/version/version_state_cubit.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/repositories/version_repository.dart';
+import 'package:arquetipo_flutter_bloc/app/shared/widgets/dialogs.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -16,9 +20,9 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
   // Override behavior methods and getters like dragDevices
   @override
   Set<PointerDeviceKind> get dragDevices => {
-    PointerDeviceKind.touch,
-    PointerDeviceKind.mouse,
-  };
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
 }
 
 class MyApp extends StatefulWidget {
@@ -27,7 +31,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   late GoRouter router;
 
   @override
@@ -49,7 +52,9 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp.router(
         title: 'Flutter Demo',
         scrollBehavior: MyCustomScrollBehavior(),
-        useInheritedMediaQuery: true, // TODO:  only for deveploment purpose
+        routerConfig: router,
+        useInheritedMediaQuery: true,
+        // TODO:  only for deveploment purpose
         localizationsDelegates: [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -58,38 +63,25 @@ class _MyAppState extends State<MyApp> {
         ],
         supportedLocales: S.supportedLocales,
         theme: buildThemeData(),
-        routeInformationProvider: router.routeInformationProvider,
-        routeInformationParser: router.routeInformationParser,
-        routerDelegate: router.routerDelegate,
         builder: (context, child) {
-          return BlocListener<ErrorCubit, DioError?>(
-            listenWhen: (previous, current) => current != null,
-            listener: (context, state) =>
-                buildErrorDialog(context, state, router),
+          return MultiBlocListener(
+            listeners: [
+              BlocListener<ErrorCubit, DioError?>(
+                listenWhen: (previous, current) => current != null,
+                listener: (context, state) =>
+                    buildErrorDialog(context, state, router),
+              ),
+              BlocListener<VersionCubit, VersionStateCubit>(
+                listener: (context, state) {
+                  print(state);
+                  state.versionState == VERSION_TYPES.UPDATED ? {} : buildVersionBlockDialog(context, state, router);
+                },
+              )
+            ],
             child: DevicePreview.appBuilder(context, child),
           );
         },
       ),
     );
-  }
-
-  // unified error handler
-  Future<dynamic> buildErrorDialog(
-      BuildContext context, DioError? state, GoRouter router) {
-    final navigationContext = router.routerDelegate.navigatorKey.currentContext!;
-    return showDialog(
-        context: navigationContext,
-        builder: (_) => AlertDialog(
-              title: Text(S.of(context)!.errorServiceTitle),
-              content: Text(state!.message),
-              actions: [
-                TextButton(
-                  child: Text(S.of(context)!.accept),
-                  onPressed: () {
-                    Navigator.pop(navigationContext);
-                  },
-                ),
-              ],
-            ));
   }
 }

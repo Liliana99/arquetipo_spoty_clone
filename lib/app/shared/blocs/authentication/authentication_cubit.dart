@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../models/user-model.dart';
+import '../../models/user_model.dart';
 import '../../repositories/authentication_repository.dart';
 import 'authentication_state_bloc.dart';
 

@@ -1,3 +1,4 @@
+import 'package:arquetipo_flutter_bloc/app/shared/blocs/version/version_cubit.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/utils/environment/env.dart';
 import 'package:arquetipo_flutter_bloc/env/environment_dev.dart';
 import 'package:device_preview/device_preview.dart';
@@ -13,6 +14,7 @@ import 'app/shared/repositories/authentication_repository.dart';
 import 'app/shared/providers/storage_provider.dart';
 import 'package:dio/dio.dart';
 
+import 'app/shared/repositories/version_repository.dart';
 import 'app/shared/utils/platform_checker.dart';
 
 void main() {
@@ -44,7 +46,8 @@ void main() {
             create: (BuildContext context) => AuthenticationCubit(
                 AuthenticationState.unknown(),
                 RepositoryProvider.of<AuthenticationRepository>(context)) ..initAuthentication()),
-        BlocProvider(create: (BuildContext context) => errorCubit)
+        BlocProvider(create: (BuildContext context) => errorCubit),
+        BlocProvider(create: (BuildContext context) => VersionCubit(VersionRepository())..init())
       ],
       child: DevicePreview(
           enabled: !kReleaseMode && Util().isComputer(),

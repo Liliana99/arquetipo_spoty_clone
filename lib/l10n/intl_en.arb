@@ -10,5 +10,7 @@
     "menuRandom": "Random",
     "menuLogout": "Logout",
     "errorServiceTitle": "Service error",
+    "blockUpdateOptional": "There are an optional update",
+    "blockUpdateMandatory": "There are a mandatory update",
     "accept": "Accept"
 }
