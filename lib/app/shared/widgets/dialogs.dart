@@ -17,7 +17,7 @@ Future<dynamic> buildErrorDialog(
       context: navigationContext,
       builder: (_) => AlertDialog(
         title: Text(S.of(context)!.errorServiceTitle),
-        content: Text(state!.message),
+        content: Text(state?.message ?? ''),
         actions: [
           TextButton(
             child: Text(S.of(context)!.accept),

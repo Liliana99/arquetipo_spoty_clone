@@ -8,6 +8,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
+import '../../../consts/assets_constants.dart';
+
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class LoginContent extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-              child: Image.asset('res/images/atSistemas_Logo.png'),
+              child: Image.asset(Assets.logoAT),
             ),
             LoginForm(),
           ],
@@ -82,7 +84,7 @@ class _UserNameInput extends StatelessWidget {
       decoration: InputDecoration(
         hintText: S.of(context)!.username,
       ),
-      validator: FormBuilderValidators.required(context,
+      validator: FormBuilderValidators.required(
           errorText: S.of(context)!.invalidUsername),
     );
   }
@@ -116,7 +118,7 @@ class _PasswordInput extends StatelessWidget {
             ),
             hintText: S.of(context)!.password,
           ),
-          validator: FormBuilderValidators.required(context,
+          validator: FormBuilderValidators.required(
               errorText: S.of(context)!.invalidPassword),
         );
       },

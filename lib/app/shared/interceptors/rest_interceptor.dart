@@ -12,7 +12,7 @@ class RestInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     print('REQUEST[${options.method}] => PATH: ${options.path}');
-    if (authenticationRepository.isLogued()) {
+    if (authenticationRepository.isLogged()) {
       options.headers.addAll({
         'Authorization': 'Bearer ${authenticationRepository.token}'
       });

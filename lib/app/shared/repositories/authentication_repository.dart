@@ -61,7 +61,7 @@ class AuthenticationRepository {
 
   void dispose() => _controller.close();
 
-  bool isLogued() {
+  bool isLogged() {
     return token != null;
   }
 
