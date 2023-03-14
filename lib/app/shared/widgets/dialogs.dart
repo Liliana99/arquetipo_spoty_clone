@@ -34,7 +34,6 @@ Future<dynamic> buildVersionBlockDialog(
     BuildContext context, VersionStateCubit state, GoRouter router) async {
   final navigationContext =
   router.routerDelegate.navigatorKey.currentContext!;
-  //await Future.delayed(Duration(milliseconds: 100));
   return showDialog(
       context: navigationContext,
       barrierDismissible: state.versionState == VERSION_TYPES.OPTIONAL_UPDATE,
