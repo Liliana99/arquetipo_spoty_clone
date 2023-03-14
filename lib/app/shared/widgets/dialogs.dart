@@ -31,18 +31,19 @@ Future<dynamic> buildErrorDialog(
 
 // unified error handler
 Future<dynamic> buildVersionBlockDialog(
-    BuildContext context, VersionStateCubit state, GoRouter router) {
+    BuildContext context, VersionStateCubit state, GoRouter router) async {
   final navigationContext =
   router.routerDelegate.navigatorKey.currentContext!;
+  //await Future.delayed(Duration(milliseconds: 100));
   return showDialog(
       context: navigationContext,
       barrierDismissible: state.versionState == VERSION_TYPES.OPTIONAL_UPDATE,
       builder: (_) => AlertDialog(
-        title: state.versionState == VERSION_TYPES.MANDATORY_UPDATE ? Text(S.of(context)!.errorServiceTitle) : Text(S.of(context)!.errorServiceTitle),
+        title: state.versionState == VERSION_TYPES.MANDATORY_UPDATE ? Text(S.of(navigationContext)!.errorServiceTitle) : Text(S.of(navigationContext)!.errorServiceTitle),
         content: Text('Hay una actualización blabalbalab: ${state.versionState}'),
         actions: [
           TextButton(
-            child: Text(S.of(context)!.accept),
+            child: Text(S.of(navigationContext)!.accept),
             onPressed: state.versionState == VERSION_TYPES.MANDATORY_UPDATE ? null : () {
               Navigator.pop(navigationContext);
             },
