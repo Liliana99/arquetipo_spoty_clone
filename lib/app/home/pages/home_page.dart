@@ -11,13 +11,15 @@ import 'package:dio/dio.dart';
 import '../repositories/tasks_repository.dart';
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) => HomeCubit(
             TaskRepository(TaskProvider(RepositoryProvider.of<Dio>(context))))
           ..loadTasks(),
-        child: HomeContent());
+        child: const HomeContent());
   }
 }
 
@@ -32,12 +34,12 @@ class HomeContent extends StatelessWidget {
             child: BlocBuilder<HomeCubit, HomeStateCubit>(
                 builder: (context, state) {
               return state.loading
-                  ? CircularProgressIndicator()
+                  ? const CircularProgressIndicator()
                   : TaskList(state.tasks);
             }),
           ),
         ),
-        bottomNavigationBar: BottomMenu(0));
+        bottomNavigationBar: const BottomMenu(0));
   }
 }
 

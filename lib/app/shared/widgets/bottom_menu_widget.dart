@@ -14,19 +14,19 @@ class MenuItems {
 
 List<MenuItems Function(BuildContext)> items = [
   (BuildContext context) =>
-      MenuItems(Icon(Icons.home), S.of(context)!.menuHome, '/home'),
+      MenuItems(const Icon(Icons.home), S.of(context)!.menuHome, '/home'),
   (BuildContext context) =>
-      MenuItems(Icon(Icons.extension), S.of(context)!.menuMore, '/more'),
-  (BuildContext context) =>
-      MenuItems(Icon(Icons.sports_bar), S.of(context)!.menuRandom, '/random'),
-  (BuildContext context) =>
-      MenuItems(Icon(Icons.settings), S.of(context)!.menuLogout, 'logout'),
+      MenuItems(const Icon(Icons.extension), S.of(context)!.menuMore, '/more'),
+  (BuildContext context) => MenuItems(
+      const Icon(Icons.sports_bar), S.of(context)!.menuRandom, '/random'),
+  (BuildContext context) => MenuItems(
+      const Icon(Icons.settings), S.of(context)!.menuLogout, 'logout'),
 ];
 
 class BottomMenu extends StatelessWidget {
   final int index;
 
-  const BottomMenu(this.index);
+  const BottomMenu(this.index, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +42,10 @@ class BottomMenu extends StatelessWidget {
       selectedItemColor: Theme.of(context).primaryColor,
       onTap: (index) {
         String route = items[index](context).route;
-        final string = 'logout';
+        const string = 'logout';
         if (route == string) {
-          BlocProvider.of<AuthenticationCubit>(context).authenticationLogoutRequested();
+          BlocProvider.of<AuthenticationCubit>(context)
+              .authenticationLogoutRequested();
           return;
         }
         GoRouter.of(context).go(route);

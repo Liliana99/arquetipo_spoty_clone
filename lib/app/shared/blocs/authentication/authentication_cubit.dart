@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/user_model.dart';
@@ -11,19 +9,19 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   AuthenticationCubit(AuthenticationState initialState, this.repository)
       : super(initialState) {
-    this.repository.status.listen(
-            (status) => emit(_mapAuthenticationStatusChangedToState(status)));
+    repository.status.listen(
+        (status) => emit(_mapAuthenticationStatusChangedToState(status)));
   }
 
   initAuthentication() async {
-    if (this.state.status == AuthenticationStatus.unknown) {
+    if (state.status == AuthenticationStatus.unknown) {
       UserModel? userModel = await repository.getUsermodel();
 
       if (userModel != null) {
         emit(AuthenticationState.authenticated(userModel));
         return;
       }
-      emit(AuthenticationState.unauthenticated());
+      emit(const AuthenticationState.unauthenticated());
     }
   }
 
@@ -31,8 +29,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     repository.logOut();
   }
 
-
-  AuthenticationState _mapAuthenticationStatusChangedToState(AuthenticationStatus status) {
+  AuthenticationState _mapAuthenticationStatusChangedToState(
+      AuthenticationStatus status) {
     switch (status) {
       case AuthenticationStatus.unauthenticated:
         return const AuthenticationState.unauthenticated();

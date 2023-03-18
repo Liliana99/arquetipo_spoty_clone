@@ -1,41 +1,43 @@
-import'dart:io' show Platform;
+import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 class Util {
-
-  os getPlatform() {
+  OpSys getPlatform() {
     if (kIsWeb) {
-      return os.Web;
+      return OpSys.web;
     } else if (Platform.isIOS) {
-      return os.IOS;
+      return OpSys.iOS;
     } else if (Platform.isAndroid) {
-      return os.Android;
+      return OpSys.android;
     } else if (Platform.isFuchsia) {
-      return os.Fuchsia;
+      return OpSys.fuchsia;
     } else if (Platform.isLinux) {
-      return os.Linux;
+      return OpSys.linux;
     } else if (Platform.isMacOS) {
-      return os.MacOS;
+      return OpSys.macOS;
     } else if (Platform.isWindows) {
-      return os.Windows;
+      return OpSys.windows;
     }
-    return os.Unknown;
+    return OpSys.unknown;
   }
 
   bool isWeb() {
-    return (getPlatform()==os.Web);
+    return (getPlatform() == OpSys.web);
   }
 
   bool isMobile() {
-    os platform = getPlatform();
-    return (platform == os.Android || platform == os.IOS || platform== os.Fuchsia);
+    OpSys platform = getPlatform();
+    return (platform == OpSys.android ||
+        platform == OpSys.iOS ||
+        platform == OpSys.fuchsia);
   }
 
   bool isComputer() {
-    os platform = getPlatform();
-    return (platform == os.Linux || platform == os.MacOS || platform== os.Windows);
+    OpSys platform = getPlatform();
+    return (platform == OpSys.linux ||
+        platform == OpSys.macOS ||
+        platform == OpSys.windows);
   }
-
 }
 
-enum os { Unknown, Web, Android, Fuchsia, IOS, Linux, MacOS, Windows }
+enum OpSys { unknown, web, android, fuchsia, iOS, linux, macOS, windows }
