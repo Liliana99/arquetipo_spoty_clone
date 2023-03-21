@@ -1,5 +1,6 @@
 import 'package:arquetipo_flutter_bloc/app/login/blocs/cubit.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
+import 'package:arquetipo_flutter_bloc/theme.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -168,23 +169,26 @@ class _LoginButton extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               key: const Key('loginForm_submit_button'),
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor),
               onPressed: state.isValid()
                   ? () => context.read<LoginCubit>().loginSubmitted()
                   : null,
               child: state.submissionInProgress
-                  ? const SizedBox(
-                      width: 15,
-                      height: 15,
-                      child: CircularProgressIndicator(
-                        key: Key('circular_progress_indicator'),
-                        backgroundColor: Colors.white,
+                  ? const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: 15,
+                        height: 15,
+                        child: CircularProgressIndicator(
+                          key: Key('circular_progress_indicator'),
+                          backgroundColor: Colors.white,
+                        ),
                       ),
                     )
-                  : Text(S.of(context)!.loginButton,
-                      style:
-                          const TextStyle(fontSize: 20, color: Colors.white)),
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(S.of(context)!.loginButton,
+                          style: context.button),
+                    ),
             ),
           ),
         );
