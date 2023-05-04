@@ -31,7 +31,7 @@ class HomeContent extends StatelessWidget {
           child: Center(
             child: BlocBuilder<HomeCubit, HomeStateCubit>(
                 builder: (context, state) {
-              return state.loading
+                  return state.loading
                   ? CircularProgressIndicator()
                   : TaskList(state.tasks);
             }),

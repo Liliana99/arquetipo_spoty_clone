@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'task_model.g.dart';
 
 @JsonSerializable()
-class TaskModel {
+class TaskModel extends Equatable{
   final String createdAt;
   final String title;
   final String description;
@@ -17,4 +18,7 @@ class TaskModel {
   factory TaskModel.fromJson(Map<String, dynamic> json) => _$TaskModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$TaskModelToJson(this);
+
+  @override
+  List<Object?> get props => [createdAt, title, description, avatar, username, id];
 }

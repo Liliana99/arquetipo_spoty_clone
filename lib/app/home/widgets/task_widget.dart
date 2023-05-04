@@ -8,15 +8,39 @@ class TaskWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: CircleAvatar(backgroundImage: NetworkImage(task.avatar)),
-            title: Text(task.title),
-            subtitle: Text(task.description),
-          ),
-        ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                leading: ClipOval(
+                  child: Container(
+                    width: constraints.maxWidth * 0.25,
+                    height: constraints.maxWidth * 0.25,
+                    child: Image.network(
+                      task.avatar,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                title: Text(
+                  task.title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 14),
+                ),
+                subtitle: Text(
+                  task.description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 12),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
