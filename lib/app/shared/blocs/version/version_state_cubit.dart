@@ -6,13 +6,11 @@ part 'version_state_cubit.g.dart';
 
 @CopyWith()
 class VersionStateCubit extends Equatable {
-  final VERSION_TYPES versionState;
+  final VersionTypes versionState;
   final String url;
 
-  const VersionStateCubit({
-    this.versionState = VERSION_TYPES.INITIAL,
-    this.url = ''
-  });
+  const VersionStateCubit(
+      {this.versionState = VersionTypes.initial, this.url = ''});
 
   @override
   List<Object?> get props => [versionState];

@@ -5,7 +5,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'app/my-app.dart';
+import 'app/my_app.dart';
 import 'app/shared/blocs/authentication/authentication_cubit.dart';
 import 'app/shared/blocs/authentication/authentication_state_bloc.dart';
 import 'app/shared/blocs/error/error_cubit.dart';
@@ -18,12 +18,11 @@ import 'app/shared/repositories/version_repository.dart';
 import 'app/shared/utils/platform_checker.dart';
 
 void main() {
-  const String envName = String.fromEnvironment('ENVIRONMENT', defaultValue: EnvDev.name);
+  const String envName =
+      String.fromEnvironment('ENVIRONMENT', defaultValue: EnvDev.name);
   ENV().initConfig(envName);
   final StorageProvider storageProvider = StorageProvider();
-  final dio = Dio(BaseOptions(
-    baseUrl: ENV().config.basePath
-  ));
+  final dio = Dio(BaseOptions(baseUrl: ENV().config.basePath));
 
   final authenticationRepository = AuthenticationRepository(storageProvider);
   final errorCubit = ErrorCubit();
@@ -35,24 +34,24 @@ void main() {
       RepositoryProvider<AuthenticationRepository>(
           create: (context) => authenticationRepository),
       // Providers
-      RepositoryProvider<StorageProvider>(
-          create: (context) => storageProvider),
-      RepositoryProvider<Dio>(
-          create: (context) => dio),
+      RepositoryProvider<StorageProvider>(create: (context) => storageProvider),
+      RepositoryProvider<Dio>(create: (context) => dio),
     ],
     child: MultiBlocProvider(
       providers: [
         BlocProvider<AuthenticationCubit>(
             create: (BuildContext context) => AuthenticationCubit(
-                AuthenticationState.unknown(),
-                RepositoryProvider.of<AuthenticationRepository>(context)) ..initAuthentication()),
+                const AuthenticationState.unknown(),
+                RepositoryProvider.of<AuthenticationRepository>(context))
+              ..initAuthentication()),
         BlocProvider(create: (BuildContext context) => errorCubit),
-        BlocProvider(create: (BuildContext context) => VersionCubit(VersionRepository())..init())
+        BlocProvider(
+            create: (BuildContext context) =>
+                VersionCubit(VersionRepository())..init())
       ],
       child: DevicePreview(
-          enabled: !kReleaseMode && Util().isComputer(),
-          builder: (context) => MyApp()
-      ),
+          enabled: !kReleaseMode && Util().isComputer() && false,
+          builder: (context) => const MyApp()),
     ),
   ));
 }

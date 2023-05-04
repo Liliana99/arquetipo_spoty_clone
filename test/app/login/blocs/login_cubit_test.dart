@@ -19,8 +19,7 @@ void main() {
               authenticationRepository.logIn(username: 'test', password: 'pwd'))
           .thenAnswer((_) => Future.value());
       when(() => authenticationRepository.logIn(
-          username: 'test',
-          password: 'wrong_password')).thenThrow(new Exception());
+          username: 'test', password: 'wrong_password')).thenThrow(Exception());
     });
 
     test('initial state is all forms empty', () {
@@ -34,7 +33,7 @@ void main() {
       build: () => loginCubit,
       act: (cubit) => cubit.formChanged({'username': 'test'}, false),
       expect: () => [
-        LoginBlocState(value: {'username': 'test'}, status: false)
+        const LoginBlocState(value: {'username': 'test'}, status: false)
       ],
     );
 
@@ -43,7 +42,7 @@ void main() {
       build: () => loginCubit,
       act: (cubit) => cubit.formChanged({'password': 'test'}, false),
       expect: () => [
-        LoginBlocState(value: {'password': 'test'}, status: false)
+        const LoginBlocState(value: {'password': 'test'}, status: false)
       ],
     );
 
@@ -52,7 +51,7 @@ void main() {
       build: () => loginCubit,
       act: (cubit) => cubit.formChanged({'remember': true}, false),
       expect: () => [
-        LoginBlocState(value: {'remember': true}, status: false)
+        const LoginBlocState(value: {'remember': true}, status: false)
       ],
     );
 
@@ -60,28 +59,29 @@ void main() {
       'emits new status when password eye visibility changed',
       build: () => loginCubit,
       act: (cubit) => cubit.loginPasswordVisibilityChanged(true),
-      expect: () => [LoginBlocState(pwdVisibility: true)],
+      expect: () => [const LoginBlocState(pwdVisibility: true)],
     );
 
     blocTest<LoginCubit, LoginBlocState>(
       'emits new status when submit is called and form is not valid',
       build: () => loginCubit,
       act: (cubit) => cubit.loginSubmitted(),
-      expect: () => [LoginBlocState(submissionInProgress: false)],
+      expect: () => [const LoginBlocState(submissionInProgress: false)],
     );
 
     blocTest<LoginCubit, LoginBlocState>(
       'emits new status when submit is called and form is valid and repository response is success',
       build: () => loginCubit,
-      seed: () => LoginBlocState(
-          value: {'userName': 'test', 'password': 'pwd', 'remember': false}, status: true),
+      seed: () => const LoginBlocState(
+          value: {'userName': 'test', 'password': 'pwd', 'remember': false},
+          status: true),
       act: (cubit) => cubit.loginSubmitted(),
       expect: () => [
-        LoginBlocState(
+        const LoginBlocState(
             value: {'userName': 'test', 'password': 'pwd', 'remember': false},
             submissionInProgress: true,
             status: true),
-        LoginBlocState(
+        const LoginBlocState(
             value: {'userName': 'test', 'password': 'pwd', 'remember': false},
             submissionInProgress: false,
             status: true),
@@ -91,15 +91,16 @@ void main() {
     blocTest<LoginCubit, LoginBlocState>(
       'emits new status when submit is called and form is valid and repository response is error',
       build: () => loginCubit,
-      seed: () => LoginBlocState(
-          value: {'userName': 'test', 'password': 'pwd', 'remember': false}, status: true),
+      seed: () => const LoginBlocState(
+          value: {'userName': 'test', 'password': 'pwd', 'remember': false},
+          status: true),
       act: (cubit) => cubit.loginSubmitted(),
       expect: () => [
-        LoginBlocState(
+        const LoginBlocState(
             value: {'userName': 'test', 'password': 'pwd', 'remember': false},
             submissionInProgress: true,
             status: true),
-        LoginBlocState(
+        const LoginBlocState(
             value: {'userName': 'test', 'password': 'pwd', 'remember': false},
             submissionInProgress: false,
             status: true),

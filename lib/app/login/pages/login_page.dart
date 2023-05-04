@@ -1,27 +1,31 @@
 import 'package:arquetipo_flutter_bloc/app/login/blocs/cubit.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/repositories/authentication_repository.dart';
+import 'package:arquetipo_flutter_bloc/theme.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
 import '../../../consts/assets_constants.dart';
 
 class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
           LoginCubit(RepositoryProvider.of<AuthenticationRepository>(context)),
-      child: LoginContent(),
+      child: const LoginContent(),
     );
   }
 }
 
 class LoginContent extends StatelessWidget {
+  const LoginContent({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +49,8 @@ class LoginContent extends StatelessWidget {
 class LoginForm extends StatelessWidget {
   final formKey = GlobalKey<FormBuilderState>();
 
+  LoginForm({super.key});
+
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
@@ -62,7 +68,7 @@ class LoginForm extends StatelessWidget {
           _UserNameInput(node),
           _PasswordInput(node),
           _RememberUserInput(),
-          _LoginButton()
+          const _LoginButton()
         ],
       ),
     );
@@ -72,12 +78,12 @@ class LoginForm extends StatelessWidget {
 class _UserNameInput extends StatelessWidget {
   final FocusScopeNode focusNode;
 
-  _UserNameInput(this.focusNode);
+  const _UserNameInput(this.focusNode);
 
   @override
   Widget build(BuildContext context) {
     return FormBuilderTextField(
-      key: Key('loginForm_usernameInput_textField'),
+      key: const Key('loginForm_usernameInput_textField'),
       name: 'userName',
       onEditingComplete: () => focusNode.nextFocus(),
       // Move focus to next
@@ -93,7 +99,7 @@ class _UserNameInput extends StatelessWidget {
 class _PasswordInput extends StatelessWidget {
   final FocusScopeNode focusNode;
 
-  _PasswordInput(this.focusNode);
+  const _PasswordInput(this.focusNode);
 
   @override
   Widget build(BuildContext context) {
@@ -163,22 +169,26 @@ class _LoginButton extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton(
               key: const Key('loginForm_submit_button'),
-              style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor),
               onPressed: state.isValid()
                   ? () => context.read<LoginCubit>().loginSubmitted()
                   : null,
               child: state.submissionInProgress
-                  ? SizedBox(
-                      width: 15,
-                      height: 15,
-                      child: CircularProgressIndicator(
-                        key: const Key('circular_progress_indicator'),
-                        backgroundColor: Colors.white,
+                  ? const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        width: 15,
+                        height: 15,
+                        child: CircularProgressIndicator(
+                          key: Key('circular_progress_indicator'),
+                          backgroundColor: Colors.white,
+                        ),
                       ),
                     )
-                  : Text(S.of(context)!.loginButton,
-                      style: TextStyle(fontSize: 20, color: Colors.white)),
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(S.of(context)!.loginButton,
+                          style: context.button),
+                    ),
             ),
           ),
         );

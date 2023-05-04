@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:arquetipo_flutter_bloc/app/shared/blocs/authentication/authentication_cubit.dart';
@@ -26,6 +27,8 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -55,7 +58,7 @@ class _MyAppState extends State<MyApp> {
         routerConfig: router,
         useInheritedMediaQuery: true,
         // TODO:  only for deveploment purpose
-        localizationsDelegates: [
+        localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
@@ -73,8 +76,8 @@ class _MyAppState extends State<MyApp> {
               ),
               BlocListener<VersionCubit, VersionStateCubit>(
                 listener: (context, state) {
-                  print(state);
-                  state.versionState == VERSION_TYPES.UPDATED
+                  log(state.toString());
+                  state.versionState == VersionTypes.updated
                       ? {}
                       : WidgetsBinding.instance.addPostFrameCallback((_) {
                           buildVersionBlockDialog(context, state, router);

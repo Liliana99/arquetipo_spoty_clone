@@ -15,7 +15,7 @@ class GoRouterRefreshStream extends ChangeNotifier {
     notifyListeners();
     _subscription = stream.asBroadcastStream().listen(
           (dynamic _) => notifyListeners(),
-    );
+        );
   }
 
   late final StreamSubscription<dynamic> _subscription;
@@ -29,35 +29,42 @@ class GoRouterRefreshStream extends ChangeNotifier {
 
 GoRouter buildRoutes(AuthenticationCubit bloc) {
   return GoRouter(
-    routes: <GoRoute>[
-      GoRoute(
-        path: '/',
-        builder: (BuildContext context, GoRouterState state) => SplashPage(),
-      ),
-      GoRoute(
-        path: '/login',
-        builder: (BuildContext context, GoRouterState state) => LoginPage(),
-      ),
-      GoRoute(
-        path: '/home',
-        builder: (BuildContext context, GoRouterState state) => HomePage(),
-      ),
-      GoRoute(
-        path: '/more',
-        builder: (BuildContext context, GoRouterState state) => MorePage(),
-      ),
-      GoRoute(
-        path: '/random',
-        builder: (BuildContext context, GoRouterState state) => RandomPage(),
-      ),
-    ],
-    redirect: (BuildContext context, GoRouterState state) {
-      if (bloc.state.status == AuthenticationStatus.authenticated) {
-        return state.subloc.contains('/login') || state.subloc == '/' ? '/home' : null;
-      } else if (bloc.state.status == AuthenticationStatus.unauthenticated) {
-        return  state.subloc.contains('/login') ? null : '/login';
-      }
-    },
-    refreshListenable: GoRouterRefreshStream(bloc.stream)
-  );
+      routes: <GoRoute>[
+        GoRoute(
+          path: '/',
+          builder: (BuildContext context, GoRouterState state) =>
+              const SplashPage(),
+        ),
+        GoRoute(
+          path: '/login',
+          builder: (BuildContext context, GoRouterState state) =>
+              const LoginPage(),
+        ),
+        GoRoute(
+          path: '/home',
+          builder: (BuildContext context, GoRouterState state) =>
+              const HomePage(),
+        ),
+        GoRoute(
+          path: '/more',
+          builder: (BuildContext context, GoRouterState state) =>
+              const MorePage(),
+        ),
+        GoRoute(
+          path: '/random',
+          builder: (BuildContext context, GoRouterState state) =>
+              const RandomPage(),
+        ),
+      ],
+      redirect: (BuildContext context, GoRouterState state) {
+        if (bloc.state.status == AuthenticationStatus.authenticated) {
+          return state.subloc.contains('/login') || state.subloc == '/'
+              ? '/home'
+              : null;
+        } else if (bloc.state.status == AuthenticationStatus.unauthenticated) {
+          return state.subloc.contains('/login') ? null : '/login';
+        }
+        return '/';
+      },
+      refreshListenable: GoRouterRefreshStream(bloc.stream));
 }

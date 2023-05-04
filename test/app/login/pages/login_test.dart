@@ -9,12 +9,12 @@ import 'package:mocktail/mocktail.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MockLoginCubit extends MockCubit<LoginBlocState> implements LoginCubit {}
-class FakeLoginBlocState extends Fake implements LoginBlocState {}
 
+class FakeLoginBlocState extends Fake implements LoginBlocState {}
 
 void main() {
   setUpAll(() {
-    registerFallbackValue(LoginBlocState());
+    registerFallbackValue(const LoginBlocState());
   });
 
   group('LoginScreen', () {
@@ -26,7 +26,8 @@ void main() {
 
     testWidgets('renders correctly', (WidgetTester tester) async {
       // Build our app and trigger a frame.
-      when(() => loginBloc!.state).thenAnswer((_) => LoginBlocState(value: {'username': 'test', 'password': 'test'}));
+      when(() => loginBloc!.state).thenAnswer((_) => const LoginBlocState(
+          value: {'username': 'test', 'password': 'test'}));
       await buildWidget(loginBloc, tester);
 
       // Verify that our counter starts at 0.
@@ -37,40 +38,48 @@ void main() {
 
     testWidgets('username changes correctly', (WidgetTester tester) async {
       // Build our app and trigger a frame.
-      when(() => loginBloc!.state).thenAnswer((_) => LoginBlocState(value: {'username': 'test', 'password': 'test'}));
+      when(() => loginBloc!.state).thenAnswer((_) => const LoginBlocState(
+          value: {'username': 'test', 'password': 'test'}));
       await buildWidget(loginBloc, tester);
-      await tester.enterText(find.byKey(Key('loginForm_usernameInput_textField')), 'test');
+      await tester.enterText(
+          find.byKey(const Key('loginForm_usernameInput_textField')), 'test');
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pump();
-      verify(() => loginBloc!.formChanged({'userName': 'test', 'password': null, 'remember': false}, false)).called(1);
+      verify(() => loginBloc!.formChanged(
+              {'userName': 'test', 'password': null, 'remember': false}, false))
+          .called(1);
     });
 
-
-    testWidgets('password eyeIcon changes correctly', (WidgetTester tester) async {
+    testWidgets('password eyeIcon changes correctly',
+        (WidgetTester tester) async {
       // Build our app and trigger a frame.
-      when(() => loginBloc!.state).thenAnswer((_) => LoginBlocState(value: {'username': 'test', 'password': 'test'}));
+      when(() => loginBloc!.state).thenAnswer((_) => const LoginBlocState(
+          value: {'username': 'test', 'password': 'test'}));
       await buildWidget(loginBloc, tester);
-      await tester.tap(find.byKey(Key('loginForm_eyeIcon_button')));
+      await tester.tap(find.byKey(const Key('loginForm_eyeIcon_button')));
       await tester.pumpAndSettle();
       verify(() => loginBloc!.loginPasswordVisibilityChanged(true)).called(1);
     });
 
-
     testWidgets('submit button called correctly', (WidgetTester tester) async {
       // Build our app and trigger a frame.
-      when(() => loginBloc!.state).thenAnswer((_) => LoginBlocState(status: true));
+      when(() => loginBloc!.state)
+          .thenAnswer((_) => const LoginBlocState(status: true));
       await buildWidget(loginBloc, tester);
-      await tester.tap(find.byKey(Key('loginForm_submit_button')));
+      await tester.tap(find.byKey(const Key('loginForm_submit_button')));
       await tester.pumpAndSettle();
       verify(() => loginBloc!.loginSubmitted()).called(1);
     });
 
-    testWidgets('show in progress when status is in progress', (WidgetTester tester) async {
+    testWidgets('show in progress when status is in progress',
+        (WidgetTester tester) async {
       // Build our app and trigger a frame.
-      when(() => loginBloc!.state).thenAnswer((_) => LoginBlocState(submissionInProgress: true));
+      when(() => loginBloc!.state)
+          .thenAnswer((_) => const LoginBlocState(submissionInProgress: true));
       await tester.pumpWidget(BlocProvider<LoginCubit>(
           create: (context) => loginBloc!,
-          child: MaterialApp(home: LoginContent(),
+          child: const MaterialApp(
+            home: LoginContent(),
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
@@ -80,7 +89,8 @@ void main() {
           )));
 
       await tester.pump();
-      expect(find.byKey(Key('circular_progress_indicator')), findsOneWidget);
+      expect(
+          find.byKey(const Key('circular_progress_indicator')), findsOneWidget);
     });
   });
 }
@@ -88,7 +98,8 @@ void main() {
 Future buildWidget(MockLoginCubit? loginBloc, WidgetTester tester) async {
   await tester.pumpWidget(BlocProvider<LoginCubit>(
       create: (context) => loginBloc!,
-      child: MaterialApp(home: LoginContent(),
+      child: const MaterialApp(
+        home: LoginContent(),
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
@@ -96,6 +107,6 @@ Future buildWidget(MockLoginCubit? loginBloc, WidgetTester tester) async {
         ],
         supportedLocales: S.supportedLocales,
       )));
-  
+
   await tester.pumpAndSettle();
 }
