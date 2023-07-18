@@ -25,7 +25,6 @@ class RestInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
     log('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
-    log(response.data.toString());
     handler.next(response);
   }
 

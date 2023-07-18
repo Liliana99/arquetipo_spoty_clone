@@ -76,7 +76,6 @@ class _MyAppState extends State<MyApp> {
               ),
               BlocListener<VersionCubit, VersionStateCubit>(
                 listener: (context, state) {
-                  log(state.toString());
                   state.versionState == VersionTypes.updated
                       ? {}
                       : WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -1,6 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.arquetipo_flutter_bloc_at">
-   <application
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
         android:label="arquetipo_flutter_bloc_at"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
@@ -31,5 +30,4 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
