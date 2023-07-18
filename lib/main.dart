@@ -50,7 +50,7 @@ void main() {
                 VersionCubit(VersionRepository())..init())
       ],
       child: DevicePreview(
-          enabled: !kReleaseMode && Util().isComputer() && false,
+          enabled: !kReleaseMode && Util().isComputer(),
           builder: (context) => const MyApp()),
     ),
   ));
