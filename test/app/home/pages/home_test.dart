@@ -62,7 +62,7 @@ void main() {
 Future buildHomeWidget(MockHomeCubit homeCubit, WidgetTester tester) async {
   await tester.pumpWidget(
     MaterialApp(
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         S.delegate

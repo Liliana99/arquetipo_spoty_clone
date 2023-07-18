@@ -43,7 +43,7 @@ GoRouter buildRoutes(AuthenticationCubit bloc) {
         GoRoute(
           path: '/home',
           builder: (BuildContext context, GoRouterState state) =>
-              const HomePage(),
+              HomePage(),
         ),
         GoRoute(
           path: '/more',
