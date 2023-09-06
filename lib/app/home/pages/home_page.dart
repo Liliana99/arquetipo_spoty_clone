@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
         create: (context) => HomeCubit(
             TaskRepository(TaskProvider(RepositoryProvider.of<Dio>(context))))
           ..loadTasks(),
-        child: HomeContent());
+        child: const HomeContent());
   }
 }
 
@@ -63,8 +63,8 @@ class _HomeGridState extends State<HomeGrid> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      padding: EdgeInsets.all(8),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      padding: const EdgeInsets.all(8),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         childAspectRatio: 3 / 2,
         crossAxisSpacing: 8,
@@ -80,7 +80,7 @@ class _HomeGridState extends State<HomeGrid> {
   Widget _animatedTaskWidget(int index) {
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
-      duration: Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 800),
       curve: Curves.easeOut,
       builder: (context, double opacity, child) {
         return Opacity(
