@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dio/dio.dart';
 
+import '../../shared/widgets/bottom_menu_widget.dart';
 import '../blocs/home_cubit.dart';
 import '../providers/task_provider.dart';
 import '../repositories/tasks_repository.dart';
@@ -29,7 +30,8 @@ class HomeContent extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Home'),
       ),
-      body: BlocBuilder<HomeCubit, HomeStateCubit>(
+        bottomNavigationBar: const BottomMenu(0),
+    body: BlocBuilder<HomeCubit, HomeStateCubit>(
         builder: (context, state) {
           if (state.loading) {
             return const Center(child: CircularProgressIndicator());
