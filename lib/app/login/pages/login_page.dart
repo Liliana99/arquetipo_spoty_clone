@@ -61,7 +61,7 @@ class LoginForm extends StatelessWidget {
       onChanged: () {
         formKey.currentState!.save();
         BlocProvider.of<LoginCubit>(context).formChanged(
-            formKey.currentState!.value, formKey.currentState!.validate());
+            formKey.currentState!.value, formKey.currentState!.validate(focusOnInvalid: false));
       },
       child: Column(
         children: [
@@ -107,6 +107,7 @@ class _PasswordInput extends StatelessWidget {
       builder: (context, state) {
         return FormBuilderTextField(
           name: 'password',
+          key: const Key('loginForm_passwordInput_textField'),
           onEditingComplete: () => {focusNode.unfocus()},
           // Move focus to next
           obscureText: !state.pwdVisibility,

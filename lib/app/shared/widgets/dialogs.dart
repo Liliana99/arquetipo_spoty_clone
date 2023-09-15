@@ -8,7 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../repositories/version_repository.dart';
 
 Future<dynamic> buildErrorDialog(
-    BuildContext context, DioError? state, GoRouter router) {
+    BuildContext context, DioException? state, GoRouter router) {
   final navigationContext = router.routerDelegate.navigatorKey.currentContext!;
   return showDialog(
       context: navigationContext,

@@ -9,7 +9,7 @@ part 'home_state_cubit.g.dart';
 class HomeStateCubit extends Equatable {
   final List<TaskModel> tasks;
   final bool loading;
-  final DioError? error;
+  final DioException? error;
 
   const HomeStateCubit({
     this.tasks = const [],

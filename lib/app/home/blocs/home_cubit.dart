@@ -13,7 +13,7 @@ class HomeCubit extends Cubit<HomeStateCubit> {
     try {
       final tasks = await _tasksRepository.getTasks();
       emit(state.copyWith(loading: false, tasks: tasks));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       emit(state.copyWith(loading: false, error: e));
     }
   }
