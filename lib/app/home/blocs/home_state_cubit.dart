@@ -18,5 +18,5 @@ class HomeStateCubit extends Equatable {
   });
 
   @override
-  List<Object?> get props => [tasks, loading];
+  List<Object?> get props => [tasks, loading, error];
 }

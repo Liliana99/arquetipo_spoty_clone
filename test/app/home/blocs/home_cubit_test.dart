@@ -43,12 +43,12 @@ void main() {
         ]),
       ],
     );
-
+    final genericExpection = DioException(requestOptions: RequestOptions(path: ''));
     blocTest<HomeCubit, HomeStateCubit>(
       'emits loading state and error when loadTasks is called and an error occurs',
       build: () {
         when(() => taskRepository.getTasks())
-            .thenThrow(DioError(requestOptions: RequestOptions(path: '')));
+            .thenThrow(genericExpection);
         return homeCubit;
       },
       act: (cubit) => cubit.loadTasks(),
@@ -56,7 +56,7 @@ void main() {
         HomeStateCubit(loading: true),
         HomeStateCubit(
           loading: false,
-          error: DioError(requestOptions: RequestOptions(path: '')),
+          error: genericExpection,
         ),
       ],
     );

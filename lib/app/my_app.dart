@@ -56,8 +56,6 @@ class _MyAppState extends State<MyApp> {
         title: 'Flutter Demo',
         scrollBehavior: MyCustomScrollBehavior(),
         routerConfig: router,
-        useInheritedMediaQuery: true,
-        // TODO:  only for deveploment purpose
         localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,

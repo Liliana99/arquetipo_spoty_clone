@@ -61,7 +61,7 @@ class LoginForm extends StatelessWidget {
       onChanged: () {
         formKey.currentState!.save();
         BlocProvider.of<LoginCubit>(context).formChanged(
-            formKey.currentState!.value, formKey.currentState!.validate(focusOnInvalid: false));
+            formKey.currentState!.value, formKey.currentState!.isValid);
       },
       child: Column(
         children: [
