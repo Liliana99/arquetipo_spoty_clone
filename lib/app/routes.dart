@@ -58,11 +58,11 @@ GoRouter buildRoutes(AuthenticationCubit bloc) {
       ],
       redirect: (BuildContext context, GoRouterState state) {
         if (bloc.state.status == AuthenticationStatus.authenticated) {
-          return state.subloc.contains('/login') || state.subloc == '/'
+          return state.matchedLocation.contains('/login') || state.matchedLocation == '/'
               ? '/home'
               : null;
         } else if (bloc.state.status == AuthenticationStatus.unauthenticated) {
-          return state.subloc.contains('/login') ? null : '/login';
+          return state.matchedLocation.contains('/login') ? null : '/login';
         }
         return '/';
       },
