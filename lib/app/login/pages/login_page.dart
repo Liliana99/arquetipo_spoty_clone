@@ -57,7 +57,6 @@ class LoginForm extends StatelessWidget {
 
     return FormBuilder(
       key: formKey,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
       onChanged: () {
         formKey.currentState!.save();
         BlocProvider.of<LoginCubit>(context).formChanged(
@@ -86,6 +85,7 @@ class _UserNameInput extends StatelessWidget {
       key: const Key('loginForm_usernameInput_textField'),
       name: 'userName',
       onEditingComplete: () => focusNode.nextFocus(),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       // Move focus to next
       decoration: InputDecoration(
         hintText: S.of(context)!.username,
@@ -109,6 +109,7 @@ class _PasswordInput extends StatelessWidget {
           name: 'password',
           key: const Key('loginForm_passwordInput_textField'),
           onEditingComplete: () => {focusNode.unfocus()},
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           // Move focus to next
           obscureText: !state.pwdVisibility,
           decoration: InputDecoration(
@@ -187,8 +188,7 @@ class _LoginButton extends StatelessWidget {
                     )
                   : Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(S.of(context)!.loginButton,
-                          style: context.button),
+                      child: Text(S.of(context)!.loginButton),
                     ),
             ),
           ),
