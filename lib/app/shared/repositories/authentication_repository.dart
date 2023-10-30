@@ -2,7 +2,11 @@ import 'dart:async';
 import 'package:arquetipo_flutter_bloc/app/shared/models/user_model.dart';
 import 'package:arquetipo_flutter_bloc/app/shared/providers/storage_provider.dart';
 
-enum AuthenticationStatus { unknown, authenticated, unauthenticated }
+enum AuthenticationStatus {
+  unknown,
+  authenticated,
+  unauthenticated,
+}
 
 class AuthenticationRepository {
   final StorageProvider storage;
@@ -37,6 +41,20 @@ class AuthenticationRepository {
     _token = "token";
   }
 
+  Future<void> doSplash() async {
+    await Future.delayed(
+      const Duration(milliseconds: 30),
+      () => _controller.add(AuthenticationStatus.unknown),
+    );
+  }
+
+  Future<void> backToSplashPage() async {
+    await Future.delayed(
+      const Duration(milliseconds: 30),
+      () => _controller.add(AuthenticationStatus.unauthenticated),
+    );
+  }
+
   void logOut() {
     storage.removeUserData();
     _controller.add(AuthenticationStatus.unauthenticated);
@@ -61,5 +79,11 @@ class AuthenticationRepository {
 
   bool isLogged() {
     return _token != null;
+  }
+
+  Future<void> logInWithOutPassword() async {
+    await Future.delayed(const Duration(milliseconds: 300)).then((value) {
+      _controller.add(AuthenticationStatus.authenticated);
+    });
   }
 }

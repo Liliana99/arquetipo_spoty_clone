@@ -1,3 +1,4 @@
+import 'package:arquetipo_flutter_bloc/consts/assets_constants.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +8,7 @@ import '../blocs/authentication/authentication_cubit.dart';
 class MenuItems {
   MenuItems(this.icon, this.label, this.route, {action = false});
 
-  Icon icon;
+  Widget icon;
   String label;
   String route;
 }
@@ -16,11 +17,13 @@ List<MenuItems Function(BuildContext)> items = [
   (BuildContext context) =>
       MenuItems(const Icon(Icons.home), S.of(context)!.menuHome, '/home'),
   (BuildContext context) =>
-      MenuItems(const Icon(Icons.extension), S.of(context)!.menuMore, '/more'),
+      MenuItems(const Icon(Icons.search), S.of(context)!.menuSearch, '/more'),
   (BuildContext context) => MenuItems(
-      const Icon(Icons.sports_bar), S.of(context)!.menuRandom, '/random'),
+      const Icon(Icons.library_books), S.of(context)!.menuLibrary, '/random'),
   (BuildContext context) => MenuItems(
-      const Icon(Icons.settings), S.of(context)!.menuLogout, 'logout'),
+      const ImageIcon(AssetImage(Assets.logoSpotify)),
+      S.of(context)!.menuPremium,
+      'logout'),
 ];
 
 class BottomMenu extends StatelessWidget {
@@ -39,7 +42,7 @@ class BottomMenu extends StatelessWidget {
               ))
           .toList(),
       currentIndex: index,
-      selectedItemColor: Theme.of(context).primaryColor,
+      selectedItemColor: Colors.white,
       onTap: (index) {
         String route = items[index](context).route;
         const string = 'logout';

@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 
 ThemeData buildThemeData() {
-  const primaryColor = Colors.purple;
-
-
   final ThemeData theme = ThemeData(
     useMaterial3: true,
-    colorSchemeSeed: primaryColor,
+    fontFamily: 'Proxima',
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: const Color.fromRGBO(88, 89, 89, 1),
+      // TRY THIS: Change to "Brightness.light"
+      //           and see that all colors change
+      //           to better contrast a light background.
+      primary: const Color.fromARGB(77, 142, 140, 140),
+      onPrimaryContainer: const Color.fromARGB(77, 121, 119, 119),
+
+      brightness: Brightness.dark,
+    ),
   );
 
   return theme.copyWith(

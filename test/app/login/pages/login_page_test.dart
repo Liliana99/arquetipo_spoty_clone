@@ -1,4 +1,5 @@
-import 'package:arquetipo_flutter_bloc/app/login/blocs/cubit.dart';
+import 'package:arquetipo_flutter_bloc/app/login/blocs/login_cubit.dart';
+import 'package:arquetipo_flutter_bloc/app/login/blocs/login_state_bloc.dart';
 import 'package:arquetipo_flutter_bloc/app/login/pages/login_page.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +32,8 @@ void main() {
       await buildWidget(loginBloc, tester);
 
       // Verify that our counter starts at 0.
-      expect(find.text('Login'), findsOneWidget);
-      expect(find.text('Username'), findsOneWidget);
+      expect(find.text('Email or username'), findsOneWidget);
+      expect(find.text('Password'), findsOneWidget);
       expect(find.text('0'), findsNothing);
     });
 
@@ -46,7 +47,7 @@ void main() {
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pump();
       verify(() => loginBloc!.formChanged(
-              {'userName': 'test', 'password': null, 'remember': false}, false))
+              {'userName': 'test', 'password': null,}, false))
           .called(1);
     });
 
@@ -69,6 +70,16 @@ void main() {
       await tester.tap(find.byKey(const Key('loginForm_submit_button')));
       await tester.pumpAndSettle();
       verify(() => loginBloc!.loginSubmitted()).called(1);
+    });
+
+     testWidgets('submit button  withoutpassword called correctly', (WidgetTester tester) async {
+      // Build our app and trigger a frame.
+      when(() => loginBloc!.state)
+          .thenAnswer((_) => const LoginBlocState(status: true));
+      await buildWidget(loginBloc, tester);
+      await tester.tap(find.text("Log in without password"));
+      await tester.pumpAndSettle();
+      verify(() => loginBloc!.loginWithOutPassword()).called(1);
     });
 
     testWidgets('show in progress when status is in progress',

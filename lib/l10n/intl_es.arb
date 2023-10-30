@@ -1,6 +1,7 @@
 {
     "username": "Usuario",
-    "password": "Contraseña",
+    "emailTitle": "Email or username",
+    "passwordTitle": "Contraseña",
     "invalidUsername": "Usuario inválido",
     "invalidPassword": "Contraseña inválida",
     "rememberUser": "Recordar usuario",
@@ -9,8 +10,12 @@
     "menuMore": "Más",
     "menuRandom": "Random",
     "menuLogout": "Logout",
+    "menuSearch": "Search",
+    "menuLibrary": "Your library",
+    "menuPremium": "Premium",
     "errorServiceTitle": "Error de servicio",
     "blockUpdateOptional": "Hay una actualización opcional",
     "blockUpdateMandatory": "Hay una actualización obligatoria",
-    "accept": "Aceptar"
+    "accept": "Aceptar",
+    "songPageTitle": "Playing from playlist"
 }

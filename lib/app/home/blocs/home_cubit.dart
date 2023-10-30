@@ -8,11 +8,11 @@ class HomeCubit extends Cubit<HomeStateCubit> {
   final TaskRepository _tasksRepository;
   HomeCubit(this._tasksRepository) : super(const HomeStateCubit());
 
-  loadTasks() async {
+  loadSongs() async {
     emit(state.copyWith(loading: true));
     try {
-      final tasks = await _tasksRepository.getTasks();
-      emit(state.copyWith(loading: false, tasks: tasks));
+      final songs = await _tasksRepository.getSongs();
+      emit(state.copyWith(loading: false, songs: songs));
     } on DioException catch (e) {
       emit(state.copyWith(loading: false, error: e));
     }

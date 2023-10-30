@@ -1,6 +1,6 @@
 import 'package:arquetipo_flutter_bloc/app/home/blocs/home_cubit.dart';
 import 'package:arquetipo_flutter_bloc/app/home/blocs/home_state_cubit.dart';
-import 'package:arquetipo_flutter_bloc/app/home/models/task_model.dart';
+import 'package:arquetipo_flutter_bloc/app/home/models/song_model.dart';
 import 'package:arquetipo_flutter_bloc/app/home/repositories/tasks_repository.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dio/dio.dart';
@@ -19,41 +19,71 @@ void main() {
       homeCubit = HomeCubit(taskRepository);
     });
 
-    test('initial state is loading false and empty tasks', () {
+    test('initial state is loading false and empty songs', () {
       expect(homeCubit.state.loading, false);
-      expect(homeCubit.state.tasks, []);
+      expect(homeCubit.state.songs, []);
       expect(homeCubit.state.error, null);
     });
 
     blocTest<HomeCubit, HomeStateCubit>(
-      'emits loading state and tasks when loadTasks is called and tasks are successfully fetched',
+      'emits loading state and songs when loadSongs is called and songs are successfully fetched',
       build: () {
-        when(() => taskRepository.getTasks()).thenAnswer((_) async => [
-          TaskModel("2023-05-01", "Task 1", "Task description 1", "https://example.com/avatar1.png", "user1", "1"),
-          TaskModel("2023-05-02", "Task 2", "Task description 2", "https://example.com/avatar2.png", "user2", "2"),
-        ]);
+        when(() => taskRepository.getSongs()).thenAnswer((_) async => [
+              const SongModel(
+                "eligendi dolores adipisci",
+                "http://loremflickr.com/640/480/nightlife",
+                "Tia",
+                "ad est ex",
+                "self",
+                "1",
+              ),
+              const SongModel(
+                  "quasi quo quod",
+                  "http://loremflickr.com/640/480/nature",
+                  "Marlene",
+                  "impedit at similique",
+                  "self",
+                  "2"),
+            ]);
         return homeCubit;
       },
-      act: (cubit) => cubit.loadTasks(),
+      act: (cubit) => cubit.loadSongs(),
       expect: () => [
-        HomeStateCubit(loading: true),
-        HomeStateCubit(loading: false, tasks: [
-          TaskModel("2023-05-01", "Task 1", "Task description 1", "https://example.com/avatar1.png", "user1", "1"),
-          TaskModel("2023-05-02", "Task 2", "Task description 2", "https://example.com/avatar2.png", "user2", "2"),
-        ]),
+        const HomeStateCubit(loading: true),
+        const HomeStateCubit(
+          loading: false,
+          songs: [
+            SongModel(
+              "eligendi dolores adipisci",
+              "http://loremflickr.com/640/480/nightlife",
+              "Tia",
+              "ad est ex",
+              "self",
+              "1",
+            ),
+            SongModel(
+              "quasi quo quod",
+              "http://loremflickr.com/640/480/nature",
+              "Marlene",
+              "impedit at similique",
+              "self",
+              "2",
+            ),
+          ],
+        ),
       ],
     );
-    final genericExpection = DioException(requestOptions: RequestOptions(path: ''));
+    final genericExpection =
+        DioException(requestOptions: RequestOptions(path: ''),);
     blocTest<HomeCubit, HomeStateCubit>(
-      'emits loading state and error when loadTasks is called and an error occurs',
+      'emits loading state and error when loadSongs is called and an error occurs',
       build: () {
-        when(() => taskRepository.getTasks())
-            .thenThrow(genericExpection);
+        when(() => taskRepository.getTasks()).thenAnswer((_) async => throw genericExpection);
         return homeCubit;
       },
-      act: (cubit) => cubit.loadTasks(),
+      act: (cubit) => cubit.loadSongs(),
       expect: () => [
-        HomeStateCubit(loading: true),
+        const HomeStateCubit(loading: true),
         HomeStateCubit(
           loading: false,
           error: genericExpection,

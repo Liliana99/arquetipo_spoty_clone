@@ -18,19 +18,44 @@ class LoginCubit extends Cubit<LoginBlocState> {
 
   loginSubmitted() async {
     if (state.isValid()) {
-      emit(state.copyWith(submissionInProgress: true));
-
       try {
         await _authenticationRepository.logIn(
           username: state.value['userName'],
           password: state.value['password'],
-          rememberUser: state.value['remember'],
+          
         );
         emit(state.copyWith(submissionInProgress: false));
       } on Exception catch (_) {
         emit(state.copyWith(submissionInProgress: false));
       }
     } else {
+      emit(state.copyWith(submissionInProgress: false));
+    }
+  }
+
+  splashTap() async {
+    try {
+      await _authenticationRepository.doSplash();
+      emit(state.copyWith(submissionInProgress: false));
+    } on Exception catch (_) {
+      emit(state.copyWith(submissionInProgress: false));
+    }
+  }
+
+  void backToSplash() async {
+    try {
+      await _authenticationRepository.backToSplashPage();
+      emit(state.copyWith(submissionInProgress: false));
+    } on Exception catch (_) {
+      emit(state.copyWith(submissionInProgress: false));
+    }
+  }
+
+  void loginWithOutPassword() async {
+    try {
+      emit(state.copyWith(submissionInProgress: true));
+      _authenticationRepository.logInWithOutPassword();
+    } on Exception catch (_) {
       emit(state.copyWith(submissionInProgress: false));
     }
   }

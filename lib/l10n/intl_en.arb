@@ -1,16 +1,23 @@
 {
     "username": "Username",
+    "emailTitle": "Email or username",
+    "passwordTitle": "Password",       
     "password": "Password",
+    "songPageTitle": "Playing from playlist",
     "invalidUsername": "invalid username",
     "invalidPassword": "invalid password",
     "rememberUser": "Remember user",
-    "loginButton": "Login",
+    "loginButton": "Log in",
     "menuHome": "Home",
     "menuMore": "More",
     "menuRandom": "Random",
     "menuLogout": "Logout",
+    "menuSearch": "Search",
+    "menuLibrary": "Your library",
+    "menuPremium": "Premium",
     "errorServiceTitle": "Service error",
     "blockUpdateOptional": "There are an optional update",
     "blockUpdateMandatory": "There are a mandatory update",
     "accept": "Accept"
+    
 }
