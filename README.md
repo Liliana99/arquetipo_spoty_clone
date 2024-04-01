@@ -1,4 +1,4 @@
-# MarialijiDeveloper Flutter App Archetype
+# Marialijideveloper Flutter App Archetype
 
 ## Table of Contents
 
