@@ -210,14 +210,14 @@ class _LoginButton extends StatelessWidget {
   ButtonStyle? setLoginButtonStyle(LoginBlocState state) {
     if (isValidState(state)) {
       return ButtonStyle(
-        foregroundColor:
-            MaterialStateProperty.all<Color>(const Color.fromARGB(255, 5, 5, 5)),
+        foregroundColor: MaterialStateProperty.all<Color>(
+            const Color.fromARGB(255, 5, 5, 5)),
         enableFeedback: true,
       );
     }
     return ButtonStyle(
-      foregroundColor:
-          MaterialStateProperty.all<Color>(const Color.fromARGB(77, 140, 138, 138)),
+      foregroundColor: MaterialStateProperty.all<Color>(
+          const Color.fromARGB(77, 140, 138, 138)),
       enableFeedback: true,
     );
   }

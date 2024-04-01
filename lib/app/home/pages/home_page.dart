@@ -15,6 +15,8 @@ import '../providers/task_provider.dart';
 import '../repositories/tasks_repository.dart';
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -69,10 +71,10 @@ class HomeContent extends StatelessWidget {
               child: Text(
                 'Made for Liliana',
                 textAlign: TextAlign.left,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall!
-                    .copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    fontSize: 16),
               ),
             ),
             const SizedBox(
@@ -107,7 +109,7 @@ class HomeContent extends StatelessWidget {
 class HomeGrid extends StatefulWidget {
   final List<SongModel> songs;
 
-  const HomeGrid({required this.songs});
+  const HomeGrid({super.key, required this.songs});
 
   @override
   _HomeGridState createState() => _HomeGridState();
@@ -149,7 +151,7 @@ class _HomeGridState extends State<HomeGrid> {
                         },
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left:8.0),
+                        padding: const EdgeInsets.only(left: 8.0),
                         child: SongDetailsWidget(songItem: songList[index]),
                       ),
                     ],
