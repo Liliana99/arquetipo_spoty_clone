@@ -15,6 +15,7 @@
 - Login + Home with button menu component
 - User service
 - Authentication bloc for autologin
+- Test (Unit test)- Coverage Test
 
 ## <a name="installation"></a>Installation & Configuration
 
