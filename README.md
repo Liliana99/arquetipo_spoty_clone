@@ -17,6 +17,9 @@
 - Authentication bloc for autologin
 - Test (Unit test)- Coverage Test
 
+
+  ![](res/images/covertest.png)
+
 ## <a name="installation"></a>Installation & Configuration
 
 ### <a name="quick-start"></a>Quick Start
