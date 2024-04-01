@@ -19,7 +19,9 @@
 
 
   ![](res/images/covertest.png)
-
+  
+  ![](res/images/spoty_clone.png)
+  
 ## <a name="installation"></a>Installation & Configuration
 
 ### <a name="quick-start"></a>Quick Start
