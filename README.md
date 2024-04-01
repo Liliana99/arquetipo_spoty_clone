@@ -70,3 +70,6 @@ open coverage/html/index.html
 
 ###Respect the message convention for the commits:
 http://karma-runner.github.io/6.1/dev/git-commit-msg.html
+
+## <a name="information"></a>Information
+https://www.marialijideveloper.com/
